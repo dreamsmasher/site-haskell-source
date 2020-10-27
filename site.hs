@@ -68,20 +68,6 @@ postCtx =
     defaultContext
 
 config :: Configuration
-config = defaultConfiguration {
-            deployCommand = 
-                unlines [ "git checkout source"
-                        , "stack exec site clean"
-                        , "stack exec site build"
-                        , "git fetch --all"
-                        , "git checkout -b master --track origin/master"
-                        , "cp -a _site/. ."
-                        , "git add -A"
-                        , "git commit -m \"Publish.\""
-                        , "git push origin master:master"
-                        , "git checkout source"
-                        , "git branch -D master"
-                        ]
-         }
+config = defaultConfiguration -- removed custom deploy for CircleCI
 
 
