@@ -34,7 +34,7 @@ jobs:
 
             - run:
                   name: Resolve/Update Dependencies
-                  command: stack --no-terminal-setup
+                  command: stack --no-terminal setup
 
             - run:
                   name: Build the site generator executable
