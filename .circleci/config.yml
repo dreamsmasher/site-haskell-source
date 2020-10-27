@@ -9,8 +9,9 @@ version: 2.1
 workflows:
     deploy:
         jobs:
-            context:
-                - dockerhub-login-norman
+            - build:
+                  context:
+                      - dockerhub-login-norman
 
 jobs:
     build:
