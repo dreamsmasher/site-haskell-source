@@ -37,6 +37,12 @@ jobs:
                   command: stack --no-terminal setup
 
             - run:
+                  name: Install bloat first (to prevent OOM error)
+                  command: |
+                    stack install pandoc
+                    stack install JuicyPixels
+
+            - run:
                   name: Build the site generator executable
                   command: stack build
 
