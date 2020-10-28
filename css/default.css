@@ -13,8 +13,12 @@ body  {
     color:white;
     margin:0;
     position:relative;
+    text-indent: 1em;
 }
 
+li {
+    color: yellow;
+}
 
 p#code {
     

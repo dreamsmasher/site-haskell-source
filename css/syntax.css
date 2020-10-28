@@ -3,6 +3,7 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode {
     color: white;
+    text-indent: 0;
     overflow: normal;
     word-wrap: break-word;
 }
