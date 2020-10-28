@@ -15,15 +15,22 @@ workflows:
 
 jobs:
     build:
-        docker:
-            - image: fpco/stack-build
-              auth:
-                  username: $DOCKERHUB_USER
-                  password: $DOCKERHUB_PASSWORD
+        machine:
+            - ubuntu-2004:202010-01
+        # docker:
+        #     - image: fpco/stack-build
+        #       auth:
+        #           username: $DOCKERHUB_USER
+        #           password: $DOCKERHUB_PASSWORD
         steps:
             - add_ssh_keys:
                   fingerprints:
                       - "wDuQH8vckKgm5eiqS8gOOKhxzMOYus2VzcM/LbGwAL0"
+
+            - install_stack:
+                  name: Install Stack
+                  command: curl -sSL https://get.haskellstack.org/ | sh
+
 
             - checkout
 
