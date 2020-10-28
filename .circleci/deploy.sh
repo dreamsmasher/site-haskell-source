@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Deploy the website to a Github pages repository using CircleCI
 #
