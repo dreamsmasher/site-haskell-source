@@ -1,6 +1,6 @@
 resolver: lts-16.14  # Adapt this as needed
 packages:
   - .
-extra-deps:
-    - hakyll-4.13.4.0  # Or a later version you installed
 
+extra-deps:
+  - hakyll-4.13.4.0  # Or a later version you installed
