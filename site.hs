@@ -21,15 +21,15 @@ main = hakyllWith config $ do
         route   idRoute
         compile compressCssCompiler
 
-    match (fromList ["about.rst", "contact.markdown"]) $ do
+    match (fromList ["about.md", "contact.md"]) $ do
         route   $ setExtension "html"
-        compile $ pandocCompiler
+        compile $ customPandoc
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
     match "posts/*" $ do
         route $ setExtension "html"
-        compile $ pandocCompilerWith def writerConfig
+        compile $ customPandoc
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
@@ -74,8 +74,8 @@ postCtx =  dateField "published" "%d-%m-%Y"
 config :: Configuration
 config = defaultConfiguration -- removed custom deploy for CircleCI
 
-writerExts :: Extensions -- pandoc writer options
-writerExts = 
+customExts :: Extensions -- pandoc options
+customExts = 
     pandocExtensions 
         `mappend` extensionsFromList [ Ext_native_divs
                                      , Ext_literate_haskell
@@ -85,5 +85,10 @@ writerExts =
                                      ]
 
 writerConfig :: WriterOptions
-writerConfig = def { writerExtensions = writerExts
-                   }
+writerConfig = def { writerExtensions = customExts }
+
+readerConfig :: ReaderOptions
+readerConfig = def { readerExtensions = customExts }
+
+customPandoc :: Compiler (Item String)
+customPandoc = pandocCompilerWith readerConfig writerConfig
