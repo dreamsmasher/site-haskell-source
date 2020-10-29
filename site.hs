@@ -3,6 +3,10 @@
 import           Data.Monoid (mappend)
 import           Hakyll
 import           Hakyll.Core.Configuration
+import           Data.Set (Set)
+import qualified Data.Set as S
+import           Text.Pandoc
+import           Text.Pandoc.Extensions
 
 
 --------------------------------------------------------------------------------
@@ -25,7 +29,7 @@ main = hakyllWith config $ do
 
     match "posts/*" $ do
         route $ setExtension "html"
-        compile $ pandocCompiler
+        compile $ pandocCompilerWith def writerConfig
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
@@ -70,4 +74,16 @@ postCtx =
 config :: Configuration
 config = defaultConfiguration -- removed custom deploy for CircleCI
 
+writerExts :: Extensions -- pandoc writer options
+writerExts = 
+    pandocExtensions 
+        `mappend` extensionsFromList [ Ext_native_divs
+                                     , Ext_literate_haskell
+                                     , Ext_emoji
+                                     , Ext_inline_code_attributes
+                                     , Ext_inline_notes
+                                     ]
 
+writerConfig :: WriterOptions
+writerConfig = def { writerExtensions = writerExts
+                   }
