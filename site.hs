@@ -67,9 +67,9 @@ main = hakyllWith config $ do
 
 --------------------------------------------------------------------------------
 postCtx :: Context String
-postCtx =
-    dateField "date" "%B %e, %Y" <>
-    defaultContext
+postCtx =  dateField "published" "%d-%m-%Y"
+        <> defaultContext
+        <> dateField "last" "%d-%m-%Y"
 
 config :: Configuration
 config = defaultConfiguration -- removed custom deploy for CircleCI

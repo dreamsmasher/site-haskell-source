@@ -1,7 +1,10 @@
 <article>
     <section class="header">
       <h1>$title$</h1>
-      Posted on <span class="date">$date$</span>
+      Written: <span class="date">$published$</span> 
+      $if(last)$
+      to <span class="date">$last$</span>
+      $endif$
         $if(author)$
         <br>
         by <a href="../about.html"><span class="name">$author$</span></a>
