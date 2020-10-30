@@ -10,6 +10,7 @@ header {
 body  {
     /* font-size:2em; */
     position: relative;
+    text-rendering: optimizeLegibility;
     margin: 0;
     display: block;
     min-height: 99%;
