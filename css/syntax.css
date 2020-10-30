@@ -10,7 +10,7 @@ a.sourceLine:empty { height: 1.2em; }
 }
 
 code {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Fira Code', monospace;
     color: cyan;
 }
 
@@ -18,7 +18,7 @@ code.sourceCode {
     white-space: pre;
     position: relative;
     font-size: 80%;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Fira Code', monospace;
 }
 
 pre { 
