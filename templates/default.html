@@ -7,8 +7,13 @@
         <title>Norman Liu's blog - $title$</title>
         <link rel="stylesheet" href="/css/default.css" />
         <link rel="stylesheet" href="/css/syntax.css" />
-        <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"> 
         <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Mono&display=swap" rel="stylesheet">
+        $if(author)$
+          <meta name="author" content="$author$">
+        $endif$
+        $if(keywords)$
+          <meta name="keywords" content="$keywords$">
+        $endif$
 
 
     </head>
@@ -38,13 +43,7 @@
         <div id="page-container">
           <div id="content">
         <main role="main">
-            $if(author)$
-            <meta name="author" content="$author$">
-            $endif$
-            $if(keywords)$
-            <meta name="keywords" content="$keywords$">
-            $endif$
-            $body$
+                        $body$
         </main>
 
           </div>

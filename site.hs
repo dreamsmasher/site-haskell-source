@@ -8,6 +8,10 @@ import qualified Data.Set as S
 import           Text.Pandoc
 import           Text.Pandoc.Extensions
 import           Data.List
+import           Control.Monad
+import qualified Debug.Trace as T
+import           Control.Applicative (Alternative (..))
+import           Data.Maybe
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -52,7 +56,7 @@ main = hakyllWith config $ do
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- fmap (take 5) . recentFirst =<< loadAll "posts/*"
+            posts <- (take 5 <$>) . recentFirst =<< loadAll "posts/*"
             let indexCtx =
                     listField "posts" postCtx (return posts) <>
                     defaultContext <>
@@ -68,9 +72,10 @@ main = hakyllWith config $ do
 
 --------------------------------------------------------------------------------
 postCtx :: Context String
-postCtx = defaultContext
+postCtx =  keywordField
         <> mapContext fixDates (dateField "last" "%d-%m-%Y")
         <> dateField "published" "%Y-%m-%d"
+        <> defaultContext 
 
 config :: Configuration
 config = defaultConfiguration -- removed custom deploy for CircleCI
@@ -99,4 +104,18 @@ fixDates = let replace c d = map (\x -> if x == c then d else x) in
                                  intercalate "-" . reverse . words . replace '-' ' '
     -- since the hakyll date compiler is wonky
     -- using words instead of splitAt to keep from pulling in Data.List.Split
+
+mkKeywords :: String -> String
+mkKeywords = intercalate ", " . map head . group . sort . words
+
+-- this should really be a builtin function
+keywordField :: Context String
+keywordField = mapContext mkKeywords $ field "keywords" $ \item -> do
+    keys <- getMetadataField (itemIdentifier item) "keywords"
+    pure $ fromMaybe empty keys
+
+-- map a function inside a value only if it exists
+maybeField :: String -> (String -> String) -> (Item a -> Maybe (Compiler String)) -> Context a
+maybeField key f g = mapContext f . field key $ fromMaybe empty . g
+
 
