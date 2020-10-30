@@ -7,8 +7,6 @@ a.sourceLine:empty { height: 1.2em; }
     margin: 1em 0;
     line-height: 1.2em;
     overflow: auto;
-    /* word-wrap: break-word; */
-    /* word-break: break-word; */
 }
 
 code {
