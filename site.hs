@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, LambdaCase #-}
 import           Data.Monoid (mappend)
 import           Hakyll
 import           Hakyll.Core.Configuration
@@ -7,7 +7,7 @@ import           Data.Set (Set)
 import qualified Data.Set as S
 import           Text.Pandoc
 import           Text.Pandoc.Extensions
-
+import           Data.List
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -68,9 +68,9 @@ main = hakyllWith config $ do
 
 --------------------------------------------------------------------------------
 postCtx :: Context String
-postCtx =  dateField "published" "%d-%m-%Y"
-        <> defaultContext
-        <> dateField "last" "%d-%m-%Y"
+postCtx = defaultContext
+        <> mapContext fixDates (dateField "last" "%d-%m-%Y")
+        <> dateField "published" "%Y-%m-%d"
 
 config :: Configuration
 config = defaultConfiguration -- removed custom deploy for CircleCI
@@ -93,3 +93,10 @@ readerConfig = def { readerExtensions = customExts }
 
 customPandoc :: Compiler (Item String)
 customPandoc = pandocCompilerWith readerConfig writerConfig
+
+fixDates :: String -> String
+fixDates = let replace c d = map (\x -> if x == c then d else x) in 
+                                 intercalate "-" . reverse . words . replace '-' ' '
+    -- since the hakyll date compiler is wonky
+    -- using words instead of splitAt to keep from pulling in Data.List.Split
+
