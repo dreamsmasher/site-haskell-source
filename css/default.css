@@ -27,6 +27,15 @@ li {
     color: yellow;
 }
 
+div .sourceCode + p > em {
+    font-size: 0.8rem;
+}
+
+div.sourceCode:before {
+    content: attr(data-caption);
+    font-size: 0.7rem;
+    color: yellow;
+}
 
 hr {
     border:3px dashed #00aaaa;
@@ -76,6 +85,12 @@ a:active  {
     flex:1
 }
 
+.pic {
+    display: block;
+    max-width: 80%;
+    height: auto;
+    margin: 0 auto;
+}
 #page-container {
     position:relative;
     width: 100%;
