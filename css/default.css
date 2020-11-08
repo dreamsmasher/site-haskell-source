@@ -81,6 +81,26 @@ a:active  {
     color:yellow;
 }
 
+table, th, td {
+    border: 1px dashed #ffff55;
+    margin: 0 auto;
+    min-width: 60%;
+    border-collapse: collapse;
+    max-width: 100%;
+}
+
+thead {
+    vertical-align: middle;
+    border-color: inherit;
+    color: cyan;
+}
+
+sup, sub {
+    vertical-align: baseline;
+    position: relative;
+    top: -0.4rem;
+    font-size: 0.7rem;
+}
 .spacer {
     flex:1
 }
