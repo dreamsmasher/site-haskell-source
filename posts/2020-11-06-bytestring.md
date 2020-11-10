@@ -349,13 +349,13 @@ into thinking it is reasonable, but when you are not looking it stabs you
 in the back and aliases all of your mutable buffers. The carcass of many a
 seasoned Haskell programmer lie strewn at its feet.*
 
-*Witness the trail of destruction:*
+*[Witness](<https://github.com/haskell/bytestring/commit/71c4b438c675aa360c79d79acc9a491e7bbc26e7>) 
+[the](<https://github.com/haskell/bytestring/commit/210c656390ae617d9ee3b8bcff5c88dd17cef8da>)
+[trail](<https://ghc.haskell.org/trac/ghc/ticket/3486>)
+[of](<https://ghc.haskell.org/trac/ghc/ticket/3487>) 
+[destruction.](<https://ghc.haskell.org/trac/ghc/ticket/7270>)*
 
- - *<https://github.com/haskell/bytestring/commit/71c4b438c675aa360c79d79acc9a491e7bbc26e7>*
- - *<https://github.com/haskell/bytestring/commit/210c656390ae617d9ee3b8bcff5c88dd17cef8da>*
- - *<https://ghc.haskell.org/trac/ghc/ticket/3486>*
- - *<https://ghc.haskell.org/trac/ghc/ticket/3487>*
- - *<https://ghc.haskell.org/trac/ghc/ticket/7270>*
+
 
 *Do not talk about \"safe\"! You do not know what is safe!*
 
