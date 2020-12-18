@@ -1,7 +1,7 @@
 ---
 title: 'beauty and the bytestring'
-published: 2020-11-06
-last: 2020-11-06
+published: 2020-12-18
+last: 2020-12-18
 keywords: programming haskell c
 ---
 
