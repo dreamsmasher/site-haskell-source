@@ -1,0 +1,34 @@
+name: nliu-net
+version: 1.0
+synopsis: personal blog
+maintainer: Norman Liu <normanwuweiliu@gmail.com>
+github: dreamsmasher/site-haskell-source
+dependencies:
+  - base >= 4.9 && < 5
+  - pandoc
+  - hakyll
+  - containers
+  - time
+  - time-locale-compat >= 0.1.1
+  - filepath
+
+
+library:
+  source-dirs: src
+
+  default-extensions:
+    - LambdaCase
+    - OverloadedStrings
+
+executables:
+  nliu-exe:
+    main: Main.hs
+    source-dirs: app
+    dependencies:
+      nliu-net
+    ghc-options:
+      - -threaded
+      - -O2
+    default-extensions:
+      - LambdaCase
+      - OverloadedStrings

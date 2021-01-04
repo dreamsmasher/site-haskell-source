@@ -1,4 +1,6 @@
 --------------------------------------------------------------------------------
+module Main where
+    
 {-# LANGUAGE OverloadedStrings, LambdaCase #-}
 import           Data.Monoid (mappend)
 import           Hakyll
@@ -9,10 +11,8 @@ import           Text.Pandoc
 import           Text.Pandoc.Extensions
 import           Data.List
 import           Control.Monad
-import qualified Debug.Trace as T
-import           Control.Applicative (Alternative (..))
-import           Data.Maybe
 
+import Contexts
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyllWith config $ do
@@ -34,8 +34,8 @@ main = hakyllWith config $ do
     match "posts/*" $ do
         route $ setExtension "html"
         compile $ customPandoc
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= loadAndApplyTemplate "templates/post.html"    postsCtx
+            >>= loadAndApplyTemplate "templates/default.html" postsCtx
             >>= relativizeUrls
 
     create ["archive.html"] $ do
@@ -43,7 +43,7 @@ main = hakyllWith config $ do
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
             let archiveCtx =
-                    listField "posts" postCtx (return posts) <>
+                    listField "posts" postsCtx (return posts) <>
                     constField "title" "Archives"            <>
                     defaultContext
 
@@ -56,9 +56,9 @@ main = hakyllWith config $ do
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- (take 5 <$>) . recentFirst =<< loadAll "posts/*"
+            posts <- (reverse . take 5 <$>) . recentFirst =<< loadAll "posts/*"
             let indexCtx =
-                    listField "posts" postCtx (return posts) <>
+                    listField "posts" postsCtx (pure posts) <>
                     defaultContext <>
                     titleField "title"
 
@@ -71,24 +71,8 @@ main = hakyllWith config $ do
 
 
 --------------------------------------------------------------------------------
-postCtx :: Context String
-postCtx =  keywordField
-        <> mapContext fixDates (dateField "last" "%d-%m-%Y")
-        <> dateField "published" "%Y-%m-%d"
-        <> defaultContext 
-
 config :: Configuration
 config = defaultConfiguration -- removed custom deploy for CircleCI
-
-customExts :: Extensions -- pandoc options
-customExts = 
-    pandocExtensions 
-        `mappend` extensionsFromList [ Ext_native_divs
-                                     , Ext_literate_haskell
-                                     , Ext_emoji
-                                     , Ext_inline_code_attributes
-                                     , Ext_inline_notes
-                                     ]
 
 writerConfig :: WriterOptions
 writerConfig = def { writerExtensions = customExts }
@@ -99,23 +83,11 @@ readerConfig = def { readerExtensions = customExts }
 customPandoc :: Compiler (Item String)
 customPandoc = pandocCompilerWith readerConfig writerConfig
 
-fixDates :: String -> String
-fixDates = let replace c d = map (\x -> if x == c then d else x) in 
-                                 intercalate "-" . reverse . words . replace '-' ' '
-    -- since the hakyll date compiler is wonky
-    -- using words instead of splitAt to keep from pulling in Data.List.Split
-
-mkKeywords :: String -> String
-mkKeywords = intercalate ", " . map head . group . sort . words
-
--- this should really be a builtin function
-keywordField :: Context String
-keywordField = mapContext mkKeywords $ field "keywords" $ \item -> do
-    keys <- getMetadataField (itemIdentifier item) "keywords"
-    pure $ fromMaybe empty keys
-
--- map a function inside a value only if it exists
-maybeField :: String -> (String -> String) -> (Item a -> Maybe (Compiler String)) -> Context a
-maybeField key f g = mapContext f . field key $ fromMaybe empty . g
-
-
+customExts :: Extensions -- pandoc options
+customExts = pandocExtensions 
+        `mappend` extensionsFromList [ Ext_native_divs
+                                     , Ext_literate_haskell
+                                     , Ext_emoji
+                                     , Ext_inline_code_attributes
+                                     , Ext_inline_notes
+                                     ]
