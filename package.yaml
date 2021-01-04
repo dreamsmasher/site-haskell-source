@@ -11,6 +11,7 @@ dependencies:
   - time
   - time-locale-compat >= 0.1.1
   - filepath
+  - clay
 
 
 library:

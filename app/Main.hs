@@ -93,3 +93,7 @@ customExts = pandocExtensions
                                      , Ext_inline_code_attributes
                                      , Ext_inline_notes
                                      ]
+
+-- for debugging
+traceComp :: Show t => t -> Compiler t
+traceComp x = unsafeCompiler (liftM2 (>>) print pure x)

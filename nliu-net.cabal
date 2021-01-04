@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: cfb7287bcb1ff2ccd14349ef8add06b66cbd2715d74b15f2b2ad3d807283984c
+-- hash: 45b6e78539b0d29e6bea8e9394d99ced638bc28141fdbb5e0f9824da62a3bade
 
 name:           nliu-net
 version:        1.0
@@ -21,6 +21,7 @@ source-repository head
 library
   exposed-modules:
       Contexts
+      CSS
   other-modules:
       Paths_nliu_net
   hs-source-dirs:
@@ -28,6 +29,7 @@ library
   default-extensions: LambdaCase OverloadedStrings
   build-depends:
       base >=4.9 && <5
+    , clay
     , containers
     , filepath
     , hakyll
@@ -46,6 +48,7 @@ executable nliu-exe
   ghc-options: -threaded -O2
   build-depends:
       base >=4.9 && <5
+    , clay
     , containers
     , filepath
     , hakyll
