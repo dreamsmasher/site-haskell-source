@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 45b6e78539b0d29e6bea8e9394d99ced638bc28141fdbb5e0f9824da62a3bade
+-- hash: 0238ae9e80fe23f7c4fff62290300ab7ec7da71f5e2acded7e4f071256c23438
 
 name:           nliu-net
 version:        1.0
@@ -36,6 +36,7 @@ library
     , pandoc
     , time
     , time-locale-compat >=0.1.1
+    , tuple
   default-language: Haskell2010
 
 executable nliu-exe
@@ -56,4 +57,5 @@ executable nliu-exe
     , pandoc
     , time
     , time-locale-compat >=0.1.1
+    , tuple
   default-language: Haskell2010

@@ -42,6 +42,7 @@ div.sourceCode {
 code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
+
 pre.numberSource a.sourceLine{ 
     position: relative; left: -4em; 
 }

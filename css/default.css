@@ -1,5 +1,5 @@
 html {
-    font-family:'Space Mono',monospace;
+    font-family:'Space Mono', monospace;
     font-size: 1.4em;
     height: 100vh;
 }
@@ -18,7 +18,6 @@ body  {
     font-variant-ligatures: no-common-ligatures;
     background: #121111;
     color:white;
-    position:relative;
     text-indent: 1em;
 
 }

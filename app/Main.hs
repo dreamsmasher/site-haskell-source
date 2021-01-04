@@ -13,8 +13,8 @@ import           Data.List
 import           Control.Monad
 import qualified Hakyll.Core.Logger as L
 import           Control.Monad.IO.Class
-
-import Contexts
+import           CSS
+import           Contexts
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyllWith config $ do
@@ -59,6 +59,7 @@ main = hakyllWith config $ do
         route idRoute
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
+            unsafeCompiler (runSiteCSS >> pure posts)
             let indexCtx =
                     listField "posts" postsCtx (pure posts) <>
                     defaultContext <>
