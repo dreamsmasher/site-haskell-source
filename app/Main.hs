@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 module Main where
-    
+
 {-# LANGUAGE OverloadedStrings, LambdaCase #-}
 import           Data.Monoid (mappend)
 import           Hakyll
@@ -11,6 +11,8 @@ import           Text.Pandoc
 import           Text.Pandoc.Extensions
 import           Data.List
 import           Control.Monad
+import qualified Hakyll.Core.Logger as L
+import           Control.Monad.IO.Class
 
 import Contexts
 --------------------------------------------------------------------------------
@@ -56,7 +58,7 @@ main = hakyllWith config $ do
     match "index.html" $ do
         route idRoute
         compile $ do
-            posts <- (reverse . take 5 <$>) . recentFirst =<< loadAll "posts/*"
+            posts <- recentFirst =<< loadAll "posts/*"
             let indexCtx =
                     listField "posts" postsCtx (pure posts) <>
                     defaultContext <>

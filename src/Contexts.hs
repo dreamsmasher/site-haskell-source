@@ -13,12 +13,12 @@ import Control.Applicative
 import System.FilePath
 import Debug.Trace
 
+
 showtrace :: Show a => a -> a
 showtrace = show >>= trace
 
 postsCtx :: Context String
-postsCtx =  dateField' "published" "%d-%m-%Y"
-         <> lastField
+postsCtx =  lastField
          <> keywordField
         -- <> dateField "published" "%Y-%m-%d"
          <> defaultContext 
