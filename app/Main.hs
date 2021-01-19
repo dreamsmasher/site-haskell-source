@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
+{-# LANGUAGE OverloadedStrings, LambdaCase #-}
 module Main where
 
-{-# LANGUAGE OverloadedStrings, LambdaCase #-}
 import           Data.Monoid (mappend)
 import           Hakyll
 import           Hakyll.Core.Configuration
@@ -17,15 +17,30 @@ import           CSS
 import           Contexts
 --------------------------------------------------------------------------------
 main :: IO ()
-main = hakyllWith config $ do
+main = do
+  hakyllWith config $ do
 
     match "images/**" $ do
         route   idRoute
         compile copyFileCompiler
 
-    match "css/*" $ do
-        route   idRoute
-        compile compressCssCompiler
+    -- create ["css/default.css"] $ do
+    --     route idRoute
+    --     compile $ do
+    --         let css = bodyField (compressCss renderSiteCSS)
+    --                 <> defaultContext
+    --         makeItem ""
+    --             >>= 
+    -- match "css/default.css" $ do
+    --     route idRoute
+    --     compile $ do
+    --         let css = bodyField (compressCss renderSiteCSS)
+    --         getResourceBody
+    --         >>= applyAsTemplate (bodyField $ compressCss renderSiteCSS) -- turn our CSS string into an item body
+
+    -- match "css/*" $ do
+    --     route   idRoute
+    --     compile compressCssCompiler
 
     match (fromList ["about.md", "contact.md"]) $ do
         route   $ setExtension "html"
@@ -59,7 +74,7 @@ main = hakyllWith config $ do
         route idRoute
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
-            unsafeCompiler (runSiteCSS >> pure posts)
+            -- unsafeCompiler (runSiteCSS >> pure posts)
             let indexCtx =
                     listField "posts" postsCtx (pure posts) <>
                     defaultContext <>

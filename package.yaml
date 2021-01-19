@@ -13,7 +13,7 @@ dependencies:
   - filepath
   - clay
   - tuple
-
+  - text
 
 library:
   source-dirs: src

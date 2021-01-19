@@ -2,13 +2,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module CSS (runSiteCSS) where
+module CSS (runSiteCSS, renderSiteCSS) where
 
 import Clay as C
 import qualified Clay.Elements as E
 import qualified Clay.Flexbox as F
 import qualified Clay.Media as M
-import qualified Clay.Text as T
+import qualified Clay.Text as CT
+import qualified Data.Text.Lazy as T
+import qualified Data.Text.Lazy.IO as IOT
 import Clay.Selector
 import Control.Applicative
 import Control.Arrow
@@ -18,16 +20,28 @@ import Data.Semigroup
 import Data.Tuple.Curry
 import Prelude hiding (span, rem, (**))
 
+-- this is its own program, so that we conditionally recompile as needed
+
 -- small helpers because CSS is wack
 apply4 :: (a -> a -> a -> a -> b) -> a -> b
 apply4 = join . join . join
 
 appXXZZ :: (a -> a -> b -> b -> c) -> a -> b -> c
 appXXZZ f a b = f a a b b
+
+marginZA :: Css
+marginZA = margin nil nil auto auto
+
+noMargin :: Css
+noMargin = apply4 margin nil
 -- 
 
 runSiteCSS :: IO ()
-runSiteCSS = putCss $ do
+runSiteCSS = putStrLn renderSiteCSS
+
+renderSiteCSS :: String
+renderSiteCSS = T.unpack . render $ do
+  -- CSS could honestly just be a monoid...
   siteHtml >> siteBody >> logo >> exps >> listInd
   siteHr >> siteNav >> refs >> tables >> tableHead >> pic >> pageCont 
   siteContent >> siteFooter >> siteH1 >> siteH2 >> CSS.name
@@ -35,7 +49,6 @@ runSiteCSS = putCss $ do
   divSCEmph >> divSCBefr
   sourceLine >> sourceCode >> siteCode >> sitePre >> highlight
   siteMedia >> codeMedia 
-  
 
 siteHtml :: Css
 siteHtml =
@@ -43,15 +56,6 @@ siteHtml =
     fontFamily ["Space Mono"] [monospace]
     height $ vh 100
     fontSize $ em 1.4
-
-nliuBG :: Color
-nliuBG = rgb 18 17 17 -- #121111
-
-marginZA :: Css
-marginZA = margin nil nil auto auto
-
-noMargin :: Css
-noMargin = apply4 margin nil
 
 siteBody :: Css
 siteBody =
@@ -61,7 +65,7 @@ siteBody =
     display block
     minHeight $ pct 99
     fontVariantLigatures
-    background nliuBG
+    backgroundColor "#121111"
     color white
     position relative
     textIndent $ indent (em 1)
@@ -302,7 +306,7 @@ siteCode =
     fontFamily ["Fira Code"] [monospace]
     color cyan
     ".sourceCode" ? do
-      whiteSpace T.pre
+      whiteSpace CT.pre
       position relative
       fontSize $ pct 80
 
