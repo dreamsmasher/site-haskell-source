@@ -62,7 +62,7 @@ jobs:
 
             - run:
                   name: Build site
-                  command: stack exec site build
+                  command: stack exec nliu build
 
             - store_artifacts:
                   path: _site
