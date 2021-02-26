@@ -38,9 +38,9 @@ main = do
     --         getResourceBody
     --         >>= applyAsTemplate (bodyField $ compressCss renderSiteCSS) -- turn our CSS string into an item body
 
-    -- match "css/*" $ do
-    --     route   idRoute
-    --     compile compressCssCompiler
+    match "css/*" $ do
+        route   idRoute
+        compile compressCssCompiler
 
     match (fromList ["about.md", "contact.md"]) $ do
         route   $ setExtension "html"
@@ -74,7 +74,6 @@ main = do
         route idRoute
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
-            -- unsafeCompiler (runSiteCSS >> pure posts)
             let indexCtx =
                     listField "posts" postsCtx (pure posts) <>
                     defaultContext <>
