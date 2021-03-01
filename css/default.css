@@ -56,7 +56,6 @@ nav .delim  {
 }
 
 nav a  {
-    font-size:1.8rem;
     font-weight:bold;
     color:white;
     text-decoration:none;
@@ -150,6 +149,11 @@ h2 {
 .name {
     color:red;
 }
+
+article {
+    max-width: 50%;
+    margin: 0 auto;
+}
 /* article { */
 /*     .header { */
 /*         font-size:1.4rem; */
@@ -166,7 +170,7 @@ h2 {
     color:white;
     text-shadow:1px 1px magenta,1.5px 1.5px yellow,-0.8px -0.8px cyan;
     text-decoration:none;
-    position:relative;
+    /* position:relative; */
     margin-top: 1rem;
     text-indent: 0;
 }
@@ -176,7 +180,7 @@ h2 {
     body {
     margin:0;
     padding:0 5%;
-}
+    }
 
     header {
         margin:4.2rem 0;
@@ -209,10 +213,14 @@ h2 {
     }
 
 }
-@media (min-width:320px) {
+@media (min-width:320px) and (max-width: 639px) {
     body {
         margin:0;
         padding:0 2%
+    }
+
+    article {
+        max-width: 100%;
     }
 
     nav {
@@ -232,7 +240,7 @@ h2 {
     .logo a {
         
         text-shadow:2.4px 2.4px magenta,3.6px 3.6px yellow,-1.6px -1.6px cyan;
-        font-size:4.8rem;
+        font-size:2.4rem;
     }
 
     nav a {
@@ -250,23 +258,34 @@ h2 {
     };
 
 
+    article {
+        max-width: 80ex;
+        margin: 0 auto;
+    }
+
     nav {
+        color: green;
+        font-size: 1.5rem;
         margin:0;
-        text-align:right;
+        text-align:center;
     };
 
     nav a {
+        font-size: 1.8rem;
         margin:0 0 0 0;
         display:inline;
     };
 
     .logo {
-        text-align:left;
+        font-size: 4.8rem;
     };
 
     .logo a {
-        float:left;
-        font-size:1.8rem;
+        /* float:left; */
+        font-size:4.8rem;
+        display: inline-block;
+        margin: 0 auto;
+        text-align: center;
     };
 
 }
