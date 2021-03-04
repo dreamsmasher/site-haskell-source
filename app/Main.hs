@@ -16,6 +16,7 @@ import           Control.Monad.IO.Class
 import           CSS
 import           Contexts
 --------------------------------------------------------------------------------
+
 main :: IO ()
 main = do
   hakyllWith config $ do
@@ -51,23 +52,33 @@ main = do
     match "posts/*" $ do
         route $ setExtension "html"
         compile $ customPandoc
-            >>= loadAndApplyTemplate "templates/post.html"    postsCtx
-            >>= loadAndApplyTemplate "templates/default.html" postsCtx
+            >>= loadAndApplyTemplate postTemplate postsCtx
+            >>= loadAndApplyTemplate defTemplate postsCtx
             >>= relativizeUrls
 
-    create ["archive.html"] $ do
-        route idRoute
-        compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
-            let archiveCtx =
-                    listField "posts" postsCtx (return posts) <>
-                    constField "title" "Archives"            <>
-                    defaultContext
+    match "drafts/*.md" $ do
+        route $ setExtension "html"
+        compile $ customPandoc
+            >>= loadAndApplyTemplate postTemplate postsCtx
+            >>= loadAndApplyTemplate defTemplate postsCtx
+            >>= relativizeUrls
 
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
-                >>= relativizeUrls
+    mkListPage "archive.html" "posts/*" "posts" "Archives" "templates/archive.html"
+    mkListPage "drafts.html" "drafts/*" "posts" "Drafts" "templates/drafts.html"
+
+    -- create ["archive.html"] $ do
+    --     route idRoute
+    --     compile $ do
+    --         posts <- recentFirst =<< loadAll "posts/*"
+    --         let archiveCtx =
+    --                 listField "posts" postsCtx (return posts) <>
+    --                 constField "title" "Archives"            <>
+    --                 defaultContext
+
+    --         makeItem ""
+    --             >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
+    --             >>= loadAndApplyTemplate "templates/default.html" archiveCtx
+    --             >>= relativizeUrls
 
 
     match "index.html" $ do
@@ -112,3 +123,24 @@ customExts = pandocExtensions
 -- for debugging
 traceComp :: Show t => t -> Compiler t
 traceComp x = unsafeCompiler (liftM2 (>>) print pure x)
+
+mkListPage :: Identifier -> Pattern -> String -> String -> Identifier -> Rules ()
+mkListPage ident sourceDir lstField pageName template = do
+    create [ident] $ do
+        route idRoute
+        compile $ do
+            posts <- recentFirst =<< loadAll sourceDir
+            let ctx =
+                    listField lstField postsCtx (return posts) <>
+                    constField "title" pageName <>
+                    defaultContext
+
+            makeItem ""
+                >>= loadAndApplyTemplate template ctx
+                >>= loadAndApplyTemplate "templates/default.html" ctx
+                >>= relativizeUrls
+
+postTemplate :: Identifier
+defTemplate  :: Identifier
+postTemplate = "templates/post.html"
+defTemplate = "templates/default.html"
