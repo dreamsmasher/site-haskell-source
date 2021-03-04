@@ -9,6 +9,14 @@
         <link rel="stylesheet" href="/css/syntax.css" />
         <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Space+Mono&display=swap" rel="stylesheet">
 
+        $if(notPost)$
+        <style>
+main {
+  max-width: max(90%, 30rem);
+}
+          
+        </style>
+        $endif$
         $if(author)$
           <meta name="author" content="$author$">
         $endif$

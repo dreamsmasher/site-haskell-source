@@ -87,6 +87,7 @@ main = do
             posts <- recentFirst =<< loadAll "posts/*"
             let indexCtx =
                     listField "posts" postsCtx (pure posts) <>
+                    notPost <>
                     defaultContext <>
                     titleField "title"
 
@@ -132,6 +133,7 @@ mkListPage ident sourceDir lstField pageName template = do
             posts <- recentFirst =<< loadAll sourceDir
             let ctx =
                     listField lstField postsCtx (return posts) <>
+                    notPost <>
                     constField "title" pageName <>
                     defaultContext
 
@@ -144,3 +146,6 @@ postTemplate :: Identifier
 defTemplate  :: Identifier
 postTemplate = "templates/post.html"
 defTemplate = "templates/default.html"
+
+notPost :: Context a
+notPost = boolField "notPost" (const True)
