@@ -2,6 +2,8 @@ html {
     font-family:'Space Mono', monospace;
     font-size: 1.4em;
     height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 section.header h1 {
@@ -13,10 +15,15 @@ header {
 }
 
 main {
-    max-width: max(50%, 30rem);
+    max-width: max(50%, 50rem);
     margin: 0 auto;
     padding: 0 0.5rem;
     /* min-height: 81vh; */
+}
+
+/* TODO figure out best codeblock stagger */
+section > p {
+    padding: 0 5rem;
 }
 
 #page-container {
@@ -150,17 +157,29 @@ sup, sub {
 }
 
 footer {
+    text-indent: 0;
     font-size:0.8em;
     flex-shrink: 0;
     /* position: relative; */
     max-height: 3.2rem;
+    margin-bottom: 0.6rem;
+    align-items: baseline;
 }
 
 #footer-container {
+    margin: 0 auto;
+    padding: 0 1rem;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    
+    align-items: flex-start;
+    height: 1rem;
+}
+
+#footer-container svg {
+    width: 1rem;
+    position: relative;
+    display: inline-block;
 }
 
 footer a {
@@ -168,7 +187,7 @@ footer a {
 }
 
 #footer-text {
-    width: 70%;
+    width: 90%;
 }
 
 #footer-contact {
@@ -313,10 +332,6 @@ h2 {
     nav {
     }
 
-    footer {
-        
-        text-align:right;
-    }
 
     .logo {
         display: block;
@@ -339,6 +354,9 @@ h2 {
 }
 
 @media (max-width:1000px) { 
+    section > p {
+        padding: 0;
+    }
     nav {
         width: 100%;
     }
@@ -346,11 +364,17 @@ h2 {
         width: auto;
         text-align: center;
     }
+    #hakyll-ad {
+        display: none;
+    }
+    #footer-text {
+        width: 70%;
+
+    }
 
 @media (min-width:640px) {
 
     body {
-        margin:2px auto;
         line-height: 1.6em;
     };
 
@@ -384,9 +408,6 @@ h2 {
 
 }
 @media only screen and (max-device-width: 480px) {
-    html {
-        font-size: 2.8vh;
-    }
     header {
         margin-top: 0.8em;
         /* margin-bottom: -0.8em; */
@@ -401,24 +422,36 @@ h2 {
         margin-top: 0; 
     }
     nav {
-        display: block;
-        text-align: center;
-        position: relative;
-        /* margin:1em auto 2.4rem auto; */
-        margin: -0.4rem auto 0;
+        font-size: 0.8rem;
     }
-    nav a {
-        font-size: 0.6rem;
-        margin: 0 auto;
 
+    #footer-text {
+        margin: 0;
+        text-indent: 0;
     }
+
+    #footer-contact svg {
+        width: 0.7rem;
+    }
+    /* nav { */
+    /*     display: block; */
+    /*     text-align: center; */
+    /*     position: relative; */
+    /*     /1* margin:1em auto 2.4rem auto; *1/ */
+    /*     margin: -0.4rem auto 0; */
+    /* } */
+    /* nav a { */
+    /*     font-size: 0.6rem; */
+    /*     margin: 0 auto; */
+
+    /* } */
 
     body {
         font-size: 0.6rem;
         max-width: 100vw;
         line-height: 136%;
         /* padding: auto 0.2em; */
-        margin: 0.2em;
+        /* margin: 0.2em; */
     }
 
     h1 {
