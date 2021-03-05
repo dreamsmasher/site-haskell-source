@@ -7,24 +7,23 @@
         <title>$title$ - Norman Liu's blog</title>
         <link rel="stylesheet" href="/css/default.css" />
         <link rel="stylesheet" href="/css/syntax.css" />
-        <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Space+Mono&display=swap" rel="stylesheet">
-
+ 
+       <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Space+Mono&display=swap" rel="stylesheet">
+       <!-- <script src="https://kit.fontawesome.com/a643dc42f0.js" crossorigin="anonymous"></script> -->
         $if(notPost)$
         <style>
 main {
   max-width: max(90%, 30rem);
 }
-          
         </style>
         $endif$
+
         $if(author)$
           <meta name="author" content="$author$">
         $endif$
         $if(keywords)$
           <meta name="keywords" content="$keywords$">
         $endif$
-
-
     </head>
     <body>
         <header>
@@ -50,13 +49,18 @@ main {
         </main>
 
           </div>
-        <footer>
+          <footer>
             <hr>
-            <div id="footer-text">
-              <span style="color:yellow">λ</span> Copyright 2020 - Norman Liu.  Site powered by 
-              <a href="http://jaspervdj.be/hakyll">Hakyll</a>.
+            <div id="footer-container">
+              <div id="footer-text">
+                <span style="color:yellow">λ</span> Copyright 2021 - Norman Liu.  Site powered by 
+                <a href="http://jaspervdj.be/hakyll">Hakyll</a>.
+              </div>
+              <div id="footer-contact">
+                $partial("templates/footer-links.html")$
+              </div>
             </div>
-        </footer>
+          </footer>
         </div>
     </body>
 </html>
