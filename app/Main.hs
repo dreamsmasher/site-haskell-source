@@ -32,24 +32,9 @@ main = do
           >>= relativizeUrls
 
   hakyllWith config do
-
     match "images/**" do
         route   idRoute
         compile copyFileCompiler
-
-    -- create ["css/default.css"] do
-    --     route idRoute
-    --     compile do
-    --         let css = bodyField (compressCss renderSiteCSS)
-    --                 <> defaultContext
-    --         makeItem ""
-    --             >>= 
-    -- match "css/default.css" do
-    --     route idRoute
-    --     compile do
-    --         let css = bodyField (compressCss renderSiteCSS)
-    --         getResourceBody
-    --         >>= applyAsTemplate (bodyField $ compressCss renderSiteCSS) -- turn our CSS string into an item body
 
     match "css/*" do
         route   idRoute
@@ -61,15 +46,8 @@ main = do
             >>= loadAndApplyTemplate "templates/default.html" baseCtx
             >>= relativizeUrls
 
-
     match "posts/*" buildPost
-
     match "drafts/*.md" buildPost
-        
-        -- compile $ customPandoc
-        --     >>= loadAndApplyTemplate postTemplate postsCtx
-        --     >>= loadAndApplyTemplate defTemplate postsCtx
-        --     >>= relativizeUrls
 
     mapM_ (\t -> uncurryN mkListPage t postsCtx' [baseCtx])
         [ ("archive.html", "posts/*", "posts", "Archives", "templates/archive.html") 
@@ -78,11 +56,10 @@ main = do
     --mkListPage "archive.html" "posts/*" "posts" "Archives" "templates/archive.html" [baseCtx]
     -- mkListPage "drafts.html" "drafts/*" "posts" "Drafts" "templates/drafts.html" [baseCtx]
 
-
     match "index.html" do
         route idRoute
         compile do
-            posts <- recentFirst =<< loadAll "posts/*"
+            posts <- take maxIndexPagePosts <$> (recentFirst =<< loadAll "posts/*")
             let indexCtx =
                     listField "posts" postsCtx' (pure posts) <>
                     notPost <>
@@ -111,13 +88,15 @@ customPandoc :: Compiler (Item String)
 customPandoc = pandocCompilerWith readerConfig writerConfig
 
 customExts :: Extensions -- pandoc options
-customExts = pandocExtensions 
-        `mappend` extensionsFromList [ Ext_native_divs
-                                     , Ext_literate_haskell
-                                     , Ext_emoji
-                                     , Ext_inline_code_attributes
-                                     , Ext_inline_notes
-                                     ]
+customExts = pandocExtensions `mappend` extensionsFromList 
+    [ Ext_native_divs
+    , Ext_literate_haskell
+    , Ext_emoji
+    , Ext_inline_code_attributes
+    , Ext_inline_notes
+    , Ext_example_lists
+    , Ext_tex_math_single_backslash 
+    ]
 
 -- for debugging
 traceComp :: Show t => t -> Compiler t

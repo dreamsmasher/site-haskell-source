@@ -19,6 +19,9 @@ import Debug.Trace
 showtrace :: Show a => a -> a
 showtrace = show >>= trace
 
+maxIndexPagePosts :: Int
+maxIndexPagePosts = 5
+
 buildBaseCtx :: IO (Context String)
 buildBaseCtx = do
     (year, _) <- toOrdinalDate . utctDay <$> getCurrentTime
