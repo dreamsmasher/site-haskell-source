@@ -4,12 +4,10 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color content="#121111"> 
         <title>$title$ - Norman Liu's blog</title>
         <link rel="stylesheet" href="/css/default.css" />
         <link rel="stylesheet" href="/css/syntax.css" />
- 
-       <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Space+Mono&display=swap" rel="stylesheet">
-       <!-- <script src="https://kit.fontawesome.com/a643dc42f0.js" crossorigin="anonymous"></script> -->
         $if(notPost)$
         <style>
 main {
@@ -52,15 +50,13 @@ main {
             <hr>
             <div id="footer-container">
               <div id="footer-text">
-                <span style="color:yellow">λ</span> © 2021 Norman Liu.  
+                <span style="color:yellow">λ</span> © $currentYear$ Norman Liu.  
                 <span id="hakyll-ad">
                 Site powered by 
                 <a href="http://jaspervdj.be/hakyll">Hakyll</a>.
                 </span> 
               </div>
-              <!-- <div id="footer-contact"> -->
                 $partial("templates/footer-links.html")$
-              <!-- </div> -->
             </div>
           </footer>
     </body>

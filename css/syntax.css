@@ -10,7 +10,7 @@ a.sourceLine:empty { height: 1.2em; }
 }
 
 code {
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
     color: cyan;
 }
 
@@ -18,10 +18,10 @@ code.sourceCode {
     white-space: pre;
     position: relative;
     font-size: 80%;
-    font-family: 'Fira Code', monospace;
 }
 
 pre { 
+    font-family: inherit;
     margin: 0; 
     padding: 0.8em;
     white-space: pre-wrap;

@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-{-# LANGUAGE OverloadedStrings, LambdaCase #-}
+{-# LANGUAGE RankNTypes, BlockArguments, OverloadedStrings, LambdaCase #-}
 module Main where
 
 import           Data.Monoid (mappend)
@@ -10,7 +10,10 @@ import qualified Data.Set as S
 import           Text.Pandoc
 import           Text.Pandoc.Extensions
 import           Data.List
+import           Data.Tuple.Curry
 import           Control.Monad
+import           Control.Applicative
+import           Data.Foldable
 import qualified Hakyll.Core.Logger as L
 import           Control.Monad.IO.Class
 import           CSS
@@ -19,76 +22,71 @@ import           Contexts
 
 main :: IO ()
 main = do
-  hakyllWith config $ do
+  baseCtx <- buildBaseCtx
+  let postsCtx' = postsCtx <> baseCtx
+      buildPost = do
+        route $ setExtension "html"
+        compile $ customPandoc
+          >>= loadAndApplyTemplate postTemplate postsCtx'
+          >>= loadAndApplyTemplate defTemplate postsCtx'
+          >>= relativizeUrls
 
-    match "images/**" $ do
+  hakyllWith config do
+
+    match "images/**" do
         route   idRoute
         compile copyFileCompiler
 
-    -- create ["css/default.css"] $ do
+    -- create ["css/default.css"] do
     --     route idRoute
-    --     compile $ do
+    --     compile do
     --         let css = bodyField (compressCss renderSiteCSS)
     --                 <> defaultContext
     --         makeItem ""
     --             >>= 
-    -- match "css/default.css" $ do
+    -- match "css/default.css" do
     --     route idRoute
-    --     compile $ do
+    --     compile do
     --         let css = bodyField (compressCss renderSiteCSS)
     --         getResourceBody
     --         >>= applyAsTemplate (bodyField $ compressCss renderSiteCSS) -- turn our CSS string into an item body
 
-    match "css/*" $ do
+    match "css/*" do
         route   idRoute
         compile compressCssCompiler
 
-    match (fromList ["about.md", "contact.md"]) $ do
+    match (fromList ["about.md", "contact.md"]) do
         route   $ setExtension "html"
         compile $ customPandoc
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/default.html" baseCtx
             >>= relativizeUrls
 
-    match "posts/*" $ do
-        route $ setExtension "html"
-        compile $ customPandoc
-            >>= loadAndApplyTemplate postTemplate postsCtx
-            >>= loadAndApplyTemplate defTemplate postsCtx
-            >>= relativizeUrls
 
-    match "drafts/*.md" $ do
-        route $ setExtension "html"
-        compile $ customPandoc
-            >>= loadAndApplyTemplate postTemplate postsCtx
-            >>= loadAndApplyTemplate defTemplate postsCtx
-            >>= relativizeUrls
+    match "posts/*" buildPost
 
-    mkListPage "archive.html" "posts/*" "posts" "Archives" "templates/archive.html"
-    mkListPage "drafts.html" "drafts/*" "posts" "Drafts" "templates/drafts.html"
+    match "drafts/*.md" buildPost
+        
+        -- compile $ customPandoc
+        --     >>= loadAndApplyTemplate postTemplate postsCtx
+        --     >>= loadAndApplyTemplate defTemplate postsCtx
+        --     >>= relativizeUrls
 
-    -- create ["archive.html"] $ do
-    --     route idRoute
-    --     compile $ do
-    --         posts <- recentFirst =<< loadAll "posts/*"
-    --         let archiveCtx =
-    --                 listField "posts" postsCtx (return posts) <>
-    --                 constField "title" "Archives"            <>
-    --                 defaultContext
-
-    --         makeItem ""
-    --             >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-    --             >>= loadAndApplyTemplate "templates/default.html" archiveCtx
-    --             >>= relativizeUrls
+    mapM_ (\t -> uncurryN mkListPage t postsCtx' [baseCtx])
+        [ ("archive.html", "posts/*", "posts", "Archives", "templates/archive.html") 
+        , ("drafts.html", "drafts/*", "posts", "Drafts", "templates/drafts.html")
+        ]
+    --mkListPage "archive.html" "posts/*" "posts" "Archives" "templates/archive.html" [baseCtx]
+    -- mkListPage "drafts.html" "drafts/*" "posts" "Drafts" "templates/drafts.html" [baseCtx]
 
 
-    match "index.html" $ do
+    match "index.html" do
         route idRoute
-        compile $ do
+        compile do
             posts <- recentFirst =<< loadAll "posts/*"
             let indexCtx =
-                    listField "posts" postsCtx (pure posts) <>
+                    listField "posts" postsCtx' (pure posts) <>
                     notPost <>
-                    defaultContext <>
+                    baseCtx <>
                     titleField "title"
 
             getResourceBody
@@ -125,17 +123,24 @@ customExts = pandocExtensions
 traceComp :: Show t => t -> Compiler t
 traceComp x = unsafeCompiler (liftM2 (>>) print pure x)
 
-mkListPage :: Identifier -> Pattern -> String -> String -> Identifier -> Rules ()
-mkListPage ident sourceDir lstField pageName template = do
-    create [ident] $ do
+mkListPage :: Identifier 
+           -> Pattern 
+           -> String 
+           -> String 
+           -> Identifier 
+           -> Context String -- pass in the result of generating a post context thru IO
+           -> [Context String] -- list of all other contexts to concatenate with
+           -> Rules ()
+mkListPage ident sourceDir lstField pageName template postCtx ctxs = do
+    create [ident] do
         route idRoute
-        compile $ do
+        compile do
             posts <- recentFirst =<< loadAll sourceDir
             let ctx =
-                    listField lstField postsCtx (return posts) <>
+                    listField lstField postCtx (pure posts) <>
                     notPost <>
                     constField "title" pageName <>
-                    defaultContext
+                    (if null ctxs then defaultContext else mconcat ctxs)
 
             makeItem ""
                 >>= loadAndApplyTemplate template ctx

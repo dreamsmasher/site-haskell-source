@@ -3,25 +3,35 @@
 module Contexts where
 
 import Data.Time
+import Data.Time.Calendar.OrdinalDate (toOrdinalDate)
 import Data.Time.Locale.Compat
 import Hakyll
 import Data.List
 import Data.Maybe
+import Data.Char (toUpper, toLower)
 import Data.Monoid
 import Control.Monad
 import Control.Applicative
+import Control.Arrow
 import System.FilePath
 import Debug.Trace
 
-
 showtrace :: Show a => a -> a
 showtrace = show >>= trace
+
+buildBaseCtx :: IO (Context String)
+buildBaseCtx = do
+    (year, _) <- toOrdinalDate . utctDay <$> getCurrentTime
+    pure $ constField "currentYear" (show year) <> defaultContext
+
+capitalize :: String -> String
+capitalize = maybe "" (uncurry (:) . (toUpper *** map toLower)) . uncons
 
 postsCtx :: Context String
 postsCtx =  lastField
          <> keywordField
         -- <> dateField "published" "%Y-%m-%d"
-         <> defaultContext 
+        --  <> defaultContext 
 
 
 fixDates :: String -> String

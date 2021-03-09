@@ -1,5 +1,7 @@
 html {
-    font-family:'Space Mono', monospace;
+    /* font-family: 'Space Mono', monospace; */
+    font-family: "Fira Code SemiBold", "Fira Code", "DejaVu Sans Mono", "Iosevka",  "Menlo", "Monaco", "Andale Mono", "Nimbus Mono L", "Lucida Console", monospace;
+    /* tentative for now, trying to get rid of google font dependencies */
     font-size: 1.4em;
     height: 100vh;
     margin: 0;
@@ -369,7 +371,6 @@ h2 {
     }
     #footer-text {
         width: 70%;
-
     }
 
 @media (min-width:640px) {
@@ -467,7 +468,4 @@ h2 {
         /* margin: -3.0em auto 1.6em; */
         bottom: 0;
     }
-
 }
-
-
