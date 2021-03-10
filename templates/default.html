@@ -1,11 +1,23 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <link id="favicon" rel="icon" type="image/svg+xml" href="/images/favicon.svg">
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color content="#121111"> 
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content=$title$ />
+        $if(blurb)$
+        <meta name="description" property="og:description" content=$blurb$ />
+        $endif$
+        <meta property="og:type" content="website"/>
+        <meta property="og:image" content="/images/nliu-logo.png" />
+        $if(index)$
+        <title>Norman Liu's blog</title>
+        $else$
         <title>$title$ - Norman Liu's blog</title>
+        $endif$
         <link rel="stylesheet" href="/css/default.css" />
         <link rel="stylesheet" href="/css/syntax.css" />
         $if(notPost)$
@@ -25,7 +37,7 @@ main {
     </head>
     <body>
         <header>
-            <div class="logo">
+            <div class="logo"> 
                 <a href="/">normative statements</a>
             </div>
             <nav>
@@ -44,16 +56,12 @@ main {
         <main role="main">
                         $body$
         </main>
-
           </div>
           <footer>
             <hr>
             <div id="footer-container">
               <div id="footer-text">
-                <span style="color:yellow">λ</span> © $currentYear$ Norman Liu.  
-                <span id="hakyll-ad">
-                Site powered by 
-                <a href="http://jaspervdj.be/hakyll">Hakyll</a>.
+                <a style="color:yellow" href="http://jaspervdj.be/hakyll">λ</a>$currentYear$ Norman Liu.  
                 </span> 
               </div>
                 $partial("templates/footer-links.html")$

@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, LambdaCase #-}
+{-# LANGUAGE TypeApplications, OverloadedStrings, LambdaCase #-}
 
 module Contexts where
 
@@ -6,6 +6,7 @@ import Data.Time
 import Data.Time.Calendar.OrdinalDate (toOrdinalDate)
 import Data.Time.Locale.Compat
 import Hakyll
+import Hakyll.Core.Identifier
 import Data.List
 import Data.Maybe
 import Data.Char (toUpper, toLower)
@@ -15,6 +16,7 @@ import Control.Applicative
 import Control.Arrow
 import System.FilePath
 import Debug.Trace
+import qualified Text.HTML.TagSoup as TS
 
 showtrace :: Show a => a -> a
 showtrace = show >>= trace
@@ -25,7 +27,21 @@ maxIndexPagePosts = 5
 buildBaseCtx :: IO (Context String)
 buildBaseCtx = do
     (year, _) <- toOrdinalDate . utctDay <$> getCurrentTime
-    pure $ constField "currentYear" (show year) <> defaultContext
+    pure $ constField "currentYear" (show year) 
+         <> field "absUrl" fmtUrl
+         <> constField "blurb" (show siteBlurb) -- to prevent globbing
+         <> constField "ogImage" ogImage
+         <> defaultContext
+    where fmtUrl = pure . (siteUrl <>) . toFilePath . itemIdentifier 
+
+siteBlurb :: String
+siteBlurb = "Normative Statements - Functional programming for nonfunctional people"
+
+siteUrl :: FilePath
+siteUrl = "https://nliu.net/"
+
+ogImage :: FilePath
+ogImage = "/images/nliu-logo.png"
 
 capitalize :: String -> String
 capitalize = maybe "" (uncurry (:) . (toUpper *** map toLower)) . uncons
@@ -112,3 +128,30 @@ getItemUTC' locale name id' = do
                , "%B %e, %Y"
                , "%b %d, %Y"
                ]
+
+-- these are modified from Hakyll so that we can apply url relativization to content attr
+-- TODO PR the "content" edit
+
+-- | Apply a function to each URL on a webpage
+withUrls' :: (String -> String) -> String -> String
+withUrls' f = withTags tag
+  where
+    tag (TS.TagOpen s a) = TS.TagOpen s $ map attr a
+    tag x                = x
+    isSemanticAttr       = (`elem` ["src", "href", "data", "poster", "content"])
+    attr (k, v)          = (k, if isSemanticAttr k then f v else v)
+
+relativizeUrlsWith' :: String -> String -> String
+relativizeUrlsWith' root = withUrls' rel
+  where
+    isRel x = "/" `isPrefixOf` x && not ("//" `isPrefixOf` x)
+    rel x   = if isRel x then root ++ x else x
+
+-- | Compiler form of 'relativizeUrls' which automatically picks the right root
+-- path
+relativizeUrls' :: Item String -> Compiler (Item String)
+relativizeUrls' item = do
+    route <- getRoute $ itemIdentifier item
+    return $ case route of
+        Nothing -> item
+        Just r  -> fmap (relativizeUrlsWith' $ toSiteRoot r) item

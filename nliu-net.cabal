@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 65fe80ff7e3b3b5d0ff9e2783793eecfcdad17f7937a926a8866c7388d507e6d
+-- hash: fc8dafd4bf61f9f8d8d57bec09c8aab4203cc80662daeba0a0ef646ae40cb2a9
 
 name:           nliu-net
 version:        1.0
@@ -33,7 +33,10 @@ library
     , containers
     , filepath
     , hakyll
+    , lens
     , pandoc
+    , pandoc-types
+    , tagsoup
     , text
     , time
     , time-locale-compat >=0.1.1
@@ -54,8 +57,11 @@ executable nliu-exe
     , containers
     , filepath
     , hakyll
+    , lens
     , nliu-net
     , pandoc
+    , pandoc-types
+    , tagsoup
     , text
     , time
     , time-locale-compat >=0.1.1

@@ -14,6 +14,16 @@ code {
     color: cyan;
 }
 
+.inline-type {
+    color: #ffff55;
+}
+.inline-mod {
+    color: rgb(255, 125, 18);
+}
+
+.inline-op {
+    color: rgb(35, 255, 90);
+}
 code.sourceCode { 
     white-space: pre;
     position: relative;
@@ -88,11 +98,11 @@ code span.dv { color: #00aaaa; } /* DecVal */
 code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #55ff55; } /* Float */
-code span.fu { color: #aa00aa; } /* Function */
+code span.fu { color: rgb(241, 29, 248); } /* Function */
 code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #ff55ff; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
+code span.op { color: #aad4b3; } /* Operator */
 code span.ot { color: #55ffff; } /* Other */
 code span.pp { color: #ffffff; } /* Preprocessor */
 code span.sc { color: #4070a0; } /* SpecialChar */

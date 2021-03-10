@@ -10,12 +10,18 @@ import qualified Data.Set as S
 import           Text.Pandoc
 import           Text.Pandoc.Extensions
 import           Data.List
+import qualified Data.Text as T
+import           Data.Maybe
+import           Data.Char (isUpper, isLower)
 import           Data.Tuple.Curry
 import           Control.Monad
 import           Control.Applicative
+import           Control.Lens (view, set, over, (^.), (%~), (.~))
+import           Control.Lens.Tuple
 import           Data.Foldable
 import qualified Hakyll.Core.Logger as L
 import           Control.Monad.IO.Class
+import           Text.Pandoc.Walk
 import           CSS
 import           Contexts
 --------------------------------------------------------------------------------
@@ -29,9 +35,13 @@ main = do
         compile $ customPandoc
           >>= loadAndApplyTemplate postTemplate postsCtx'
           >>= loadAndApplyTemplate defTemplate postsCtx'
-          >>= relativizeUrls
+          >>= relativizeUrls'
 
   hakyllWith config do
+    match (fromList ["CNAME", "site.webmanifest"]) do
+        route idRoute
+        compile copyFileCompiler 
+
     match "images/**" do
         route   idRoute
         compile copyFileCompiler
@@ -44,7 +54,7 @@ main = do
         route   $ setExtension "html"
         compile $ customPandoc
             >>= loadAndApplyTemplate "templates/default.html" baseCtx
-            >>= relativizeUrls
+            >>= relativizeUrls'
 
     match "posts/*" buildPost
     match "drafts/*.md" buildPost
@@ -60,16 +70,15 @@ main = do
         route idRoute
         compile do
             posts <- take maxIndexPagePosts <$> (recentFirst =<< loadAll "posts/*")
-            let indexCtx =
-                    listField "posts" postsCtx' (pure posts) <>
-                    notPost <>
-                    baseCtx <>
-                    titleField "title"
+            let indexCtx = listField "posts" postsCtx' (pure posts) 
+                           <> boolField "index" (const True) -- hack so that we default to regular title
+                           <> notPost 
+                           <> baseCtx 
 
             getResourceBody
                 >>= applyAsTemplate indexCtx
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
-                >>= relativizeUrls
+                >>= relativizeUrls'
 
     match "templates/*" $ compile templateBodyCompiler
 
@@ -79,13 +88,13 @@ config :: Configuration
 config = defaultConfiguration -- removed custom deploy for CircleCI
 
 writerConfig :: WriterOptions
-writerConfig = def { writerExtensions = customExts }
+writerConfig = def { writerExtensions = customExts , writerTableOfContents = True}
 
 readerConfig :: ReaderOptions
-readerConfig = def { readerExtensions = customExts }
+readerConfig = def { readerExtensions = customExts, readerStripComments = True }
 
 customPandoc :: Compiler (Item String)
-customPandoc = pandocCompilerWith readerConfig writerConfig
+customPandoc = pandocCompilerWithTransform readerConfig writerConfig transformInlineCode
 
 customExts :: Extensions -- pandoc options
 customExts = pandocExtensions `mappend` extensionsFromList 
@@ -103,10 +112,10 @@ traceComp :: Show t => t -> Compiler t
 traceComp x = unsafeCompiler (liftM2 (>>) print pure x)
 
 mkListPage :: Identifier 
-           -> Pattern 
-           -> String 
-           -> String 
-           -> Identifier 
+           -> Pattern
+           -> String
+           -> String
+           -> Identifier
            -> Context String -- pass in the result of generating a post context thru IO
            -> [Context String] -- list of all other contexts to concatenate with
            -> Rules ()
@@ -124,7 +133,7 @@ mkListPage ident sourceDir lstField pageName template postCtx ctxs = do
             makeItem ""
                 >>= loadAndApplyTemplate template ctx
                 >>= loadAndApplyTemplate "templates/default.html" ctx
-                >>= relativizeUrls
+                >>= relativizeUrls'
 
 postTemplate :: Identifier
 defTemplate  :: Identifier
@@ -133,3 +142,17 @@ defTemplate = "templates/default.html"
 
 notPost :: Context a
 notPost = boolField "notPost" (const True)
+
+transformInlineCode :: Pandoc -> Pandoc
+transformInlineCode = walk transform
+    where addClass :: T.Text -> Attr -> Attr
+          addClass klass = over _2 (klass :)
+          syms = S.fromList "<>{}()?+-/*=!@#$%^&|._" 
+          isInlineType = maybe False (isUpper . fst) . T.uncons
+          isInlineOp = T.all (`S.member` syms)
+          isModule = isJust . T.find (== '.')
+          transform = \case
+            c@(Code a t) | isInlineType t -> Code (addClass (if isModule t then "inline-mod" else "inline-type") a) t
+                         | isInlineOp t -> Code (addClass "inline-op" a) t
+                         | otherwise -> c
+            e -> e

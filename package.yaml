@@ -14,6 +14,9 @@ dependencies:
   - clay
   - tuple
   - text
+  - pandoc-types
+  - lens
+  - tagsoup
 
 library:
   source-dirs: src
