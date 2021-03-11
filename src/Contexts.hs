@@ -36,20 +36,9 @@ buildBaseCtx = do
     where fmtUrl = pure . (siteUrl <>) . toFilePath . itemIdentifier 
 
 funcFields :: Context String
--- funcFields = functionField "testing" (\args _ -> fail "this fucking sucks")
 funcFields = mconcat $ map (uncurry functionField)
     [ ("logoSvg", const . pure . concatMap (printf "<svg><use href=#%s></svg>") )
-    , ("test", \xs x -> pure $ show xs <> show x)
     ]
-
-siteBlurb :: String
-siteBlurb = "Normative Statements - Functional programming for nonfunctional people"
-
-siteUrl :: FilePath
-siteUrl = "https://nliu.net/"
-
-ogImage :: FilePath
-ogImage = "/images/nliu-logo.png"
 
 capitalize :: String -> String
 capitalize = maybe "" (uncurry (:) . (toUpper *** map toLower)) . uncons
@@ -71,18 +60,10 @@ mkKeywords = intercalate ", " . map head . group . sort . words
 
 lastField :: Context String 
 lastField = dateField' "last" "%Y-%m-%d"
--- lastField :: Context String 
--- lastField = maybeField fixDates "last"
-    -- mapContext fixDates . field "last" $ \item -> do
-    -- lst <- getMetadataField (itemIdentifier item) "last"
-    -- pure $ fromMaybe empty lst
 
 -- this should really be a builtin function
 keywordField :: Context String
 keywordField = maybeField mkKeywords "keywords"
-    -- mapContext mkKeywords $ field "keywords" $ \item -> do
-    -- keys <- getMetadataField (itemIdentifier item) "keywords"
-    -- pure $ fromMaybe empty keys
 
 -- map a function inside a value only if it exists
 maybeField :: (String -> String) -> String -> Context a
@@ -162,3 +143,13 @@ relativizeUrls' item = do
     return $ case route of
         Nothing -> item
         Just r  -> fmap (relativizeUrlsWith' $ toSiteRoot r) item
+
+-- constants
+siteBlurb :: String
+siteBlurb = "Normative Statements - Functional programming for nonfunctional people"
+
+siteUrl :: FilePath
+siteUrl = "https://nliu.net/"
+
+ogImage :: FilePath
+ogImage = "/images/nliu-logo.png"

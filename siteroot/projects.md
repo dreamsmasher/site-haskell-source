@@ -9,13 +9,12 @@ main {
 
 h2 {
     color: #ffff00;
-    margin-bottom:0;
+    font-size: 1.2rem;
 }
 .stack {
     color: cyan;
     display: inline-block;
-    line-height: 0.5rem;
-    font-size: 1rem;
+    margin: 0;
 }
 
 .stack > p {
@@ -25,11 +24,10 @@ h2 {
     color:white;
     width: 1rem;
     height: auto;
-    fill: magenta;
+    fill: cyan;
 }
 
 svg {
-    /* display: inline-block; */
     height: 1rem;
     width: 1rem;
     fill: magenta;
@@ -39,6 +37,7 @@ svg {
 #github {
     height: 2rem;
     width: 2rem;
+    fill: magenta;
 }
 </style>
 

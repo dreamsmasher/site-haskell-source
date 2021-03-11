@@ -266,6 +266,7 @@ h2 {
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
+
     /* text-shadow: 0.1rem 0.1rem magenta, 0.18rem 0.18rem yellow, -0.10rem -0.10rem cyan; */
     text-shadow: -0.12rem -0.12rem cyan, -0.24rem -0.24rem yellow,-0.36rem -0.36rem magenta ;
     font-weight:bold;
@@ -276,7 +277,7 @@ h2 {
     text-decoration:none;
     font-size:  3.6rem;/*1.8rem;*/
     line-height: 3.0rem;
-    color:white;
+    color: white;
     margin: 0 auto;
     padding-top: 1rem;
     position: relative;
@@ -432,7 +433,12 @@ h2 {
     }
 
     nav {
-        font-size: 0.8rem;
+        font-size: 0.6rem;
+        margin-bottom: 0.6rem;
+        line-height: 1.0rem;
+    }
+    nav a {
+        font-size: 1.0rem;
     }
 
     #footer-text {

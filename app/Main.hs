@@ -68,7 +68,7 @@ main = do
     match "posts/*" buildPost
     match "drafts/*.md" buildPost
 
-    mapM_ (\t -> uncurryN mkListPage t postsCtx' [baseCtx])
+    mapM_ (\t -> uncurryN mkListPage t postsCtx' [funcFields, baseCtx])
         [ ("archive.html", "posts/*", "posts", "Archives", "templates/archive.html") 
         , ("drafts.html", "drafts/*", "posts", "Drafts", "templates/drafts.html")
         ]
@@ -134,11 +134,12 @@ mkListPage ident sourceDir lstField pageName template postCtx ctxs = do
         route idRoute
         compile do
             posts <- recentFirst =<< loadAll sourceDir
-            let ctx =
-                    listField lstField postCtx (pure posts) <>
-                    notPost <>
-                    constField "title" pageName <>
-                    (if null ctxs then defaultContext else mconcat ctxs)
+            let ctx = mconcat 
+                  [ listField lstField postCtx (pure posts) 
+                  , notPost
+                  , constField "title" pageName 
+                  , if null ctxs then defaultContext else mconcat ctxs
+                  ]
 
             makeItem ""
                 >>= loadAndApplyTemplate template ctx
@@ -164,6 +165,7 @@ syms = S.fromList "<>{}()?+-/*=!@#$%^&|._"
 
 -- more stuff modified from hakyll....
 -- we need to hook into the raw string before passing it into pandoc
+-- TODO delete after PR merged
 pandocTransform 
     :: ReaderOptions 
     -> WriterOptions 
@@ -172,7 +174,6 @@ pandocTransform
     -> Compiler (Item String)
 pandocTransform r w f = readPandocWith r >=> traverse f >=> pure . writePandocWith w 
 
--- macros
 walkPandocAST :: Pandoc -> Pandoc
 walkPandocAST = walk transform
     where 
@@ -180,9 +181,10 @@ walkPandocAST = walk transform
           isInlineOp = T.all (`S.member` syms)
           isModule = isJust . T.find (== '.')
           transform = \case
-            c@(Code a t) | isInlineType t -> Code (addClass (if isModule t then "inline-mod" else "inline-type") a) t
-                         | isInlineOp t -> Code (addClass "inline-op" a) t
-                         | otherwise -> c
+            c@(Code a t) 
+                | isInlineType t -> Code (addClass (if isModule t then "inline-mod" else "inline-type") a) t
+                | isInlineOp t -> Code (addClass "inline-op" a) t
+                | otherwise -> c
             e -> e
         
 moveToRoot :: Routes
