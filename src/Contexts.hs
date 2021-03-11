@@ -15,6 +15,7 @@ import Control.Monad
 import Control.Applicative
 import Control.Arrow
 import System.FilePath
+import Text.Printf (printf)
 import Debug.Trace
 import qualified Text.HTML.TagSoup as TS
 
@@ -34,6 +35,13 @@ buildBaseCtx = do
          <> defaultContext
     where fmtUrl = pure . (siteUrl <>) . toFilePath . itemIdentifier 
 
+funcFields :: Context String
+-- funcFields = functionField "testing" (\args _ -> fail "this fucking sucks")
+funcFields = mconcat $ map (uncurry functionField)
+    [ ("logoSvg", const . pure . concatMap (printf "<svg><use href=#%s></svg>") )
+    , ("test", \xs x -> pure $ show xs <> show x)
+    ]
+
 siteBlurb :: String
 siteBlurb = "Normative Statements - Functional programming for nonfunctional people"
 
@@ -51,7 +59,6 @@ postsCtx =  lastField
          <> keywordField
         -- <> dateField "published" "%Y-%m-%d"
         --  <> defaultContext 
-
 
 fixDates :: String -> String
 fixDates = let replace c d = map (\x -> if x == c then d else x) in 

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: fc8dafd4bf61f9f8d8d57bec09c8aab4203cc80662daeba0a0ef646ae40cb2a9
+-- hash: 05420b31ac75bd30472447020aebef47b8d2355bc754b70fe88d03fc26210a0e
 
 name:           nliu-net
 version:        1.0
@@ -36,6 +36,7 @@ library
     , lens
     , pandoc
     , pandoc-types
+    , regex-tdfa
     , tagsoup
     , text
     , time
@@ -61,6 +62,7 @@ executable nliu-exe
     , nliu-net
     , pandoc
     , pandoc-types
+    , regex-tdfa
     , tagsoup
     , text
     , time

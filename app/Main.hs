@@ -12,6 +12,7 @@ import           Text.Pandoc.Extensions
 import           Data.List
 import qualified Data.Text as T
 import           Data.Maybe
+import           Data.Functor ((<&>))
 import           Data.Char (isUpper, isLower)
 import           Data.Tuple.Curry
 import           Control.Monad
@@ -22,6 +23,10 @@ import           Data.Foldable
 import qualified Hakyll.Core.Logger as L
 import           Control.Monad.IO.Class
 import           Text.Pandoc.Walk
+import           Text.Printf (printf)
+import           Text.Regex.TDFA ((=~~), makeRegex, Regex (..), RegexMaker (..))
+import qualified Text.Regex.TDFA as R
+import qualified Text.Regex.TDFA.Text as TR
 import           CSS
 import           Contexts
 --------------------------------------------------------------------------------
@@ -32,7 +37,9 @@ main = do
   let postsCtx' = postsCtx <> baseCtx
       buildPost = do
         route $ setExtension "html"
-        compile $ customPandoc
+        compile 
+          $ getResourceBody 
+          >>= customPandoc
           >>= loadAndApplyTemplate postTemplate postsCtx'
           >>= loadAndApplyTemplate defTemplate postsCtx'
           >>= relativizeUrls'
@@ -50,9 +57,11 @@ main = do
         route   idRoute
         compile compressCssCompiler
 
-    match (fromList ["about.md", "contact.md"]) do
-        route   $ setExtension "html"
-        compile $ customPandoc
+    match (fromGlob "siteroot/*.md") do
+        route moveToRoot
+        compile  
+            $ initialTransforms
+            >>= customPandoc
             >>= loadAndApplyTemplate "templates/default.html" baseCtx
             >>= relativizeUrls'
 
@@ -63,25 +72,23 @@ main = do
         [ ("archive.html", "posts/*", "posts", "Archives", "templates/archive.html") 
         , ("drafts.html", "drafts/*", "posts", "Drafts", "templates/drafts.html")
         ]
-    --mkListPage "archive.html" "posts/*" "posts" "Archives" "templates/archive.html" [baseCtx]
-    -- mkListPage "drafts.html" "drafts/*" "posts" "Drafts" "templates/drafts.html" [baseCtx]
 
-    match "index.html" do
-        route idRoute
+    match "siteroot/index.html" do
+        route moveToRoot
         compile do
             posts <- take maxIndexPagePosts <$> (recentFirst =<< loadAll "posts/*")
             let indexCtx = listField "posts" postsCtx' (pure posts) 
+                           <> funcFields
                            <> boolField "index" (const True) -- hack so that we default to regular title
                            <> notPost 
                            <> baseCtx 
 
-            getResourceBody
-                >>= applyAsTemplate indexCtx
+            getResourceBody 
+                >>= applyAsTemplate indexCtx 
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls'
 
     match "templates/*" $ compile templateBodyCompiler
-
 
 --------------------------------------------------------------------------------
 config :: Configuration
@@ -93,8 +100,11 @@ writerConfig = def { writerExtensions = customExts , writerTableOfContents = Tru
 readerConfig :: ReaderOptions
 readerConfig = def { readerExtensions = customExts, readerStripComments = True }
 
-customPandoc :: Compiler (Item String)
-customPandoc = pandocCompilerWithTransform readerConfig writerConfig transformInlineCode
+initialTransforms :: Compiler (Item String)
+initialTransforms = getResourceBody >>= applyAsTemplate funcFields
+
+customPandoc :: Item String -> Compiler (Item String)
+customPandoc = pandocTransform readerConfig writerConfig (pure . walkPandocAST)
 
 customExts :: Extensions -- pandoc options
 customExts = pandocExtensions `mappend` extensionsFromList 
@@ -143,11 +153,29 @@ defTemplate = "templates/default.html"
 notPost :: Context a
 notPost = boolField "notPost" (const True)
 
-transformInlineCode :: Pandoc -> Pandoc
-transformInlineCode = walk transform
-    where addClass :: T.Text -> Attr -> Attr
-          addClass klass = over _2 (klass :)
-          syms = S.fromList "<>{}()?+-/*=!@#$%^&|._" 
+addClass :: T.Text -> Attr -> Attr
+addClass klass = over _2 (klass :)
+
+getClasses :: Attr -> [T.Text]
+getClasses (_, c, _) = c
+
+syms :: Set Char
+syms = S.fromList "<>{}()?+-/*=!@#$%^&|._" 
+
+-- more stuff modified from hakyll....
+-- we need to hook into the raw string before passing it into pandoc
+pandocTransform 
+    :: ReaderOptions 
+    -> WriterOptions 
+    -> (Pandoc -> Compiler Pandoc) 
+    -> Item String 
+    -> Compiler (Item String)
+pandocTransform r w f = readPandocWith r >=> traverse f >=> pure . writePandocWith w 
+
+-- macros
+walkPandocAST :: Pandoc -> Pandoc
+walkPandocAST = walk transform
+    where 
           isInlineType = maybe False (isUpper . fst) . T.uncons
           isInlineOp = T.all (`S.member` syms)
           isModule = isJust . T.find (== '.')
@@ -156,3 +184,6 @@ transformInlineCode = walk transform
                          | isInlineOp t -> Code (addClass "inline-op" a) t
                          | otherwise -> c
             e -> e
+        
+moveToRoot :: Routes
+moveToRoot = gsubRoute "siteroot/" (const "") `composeRoutes` setExtension "html"

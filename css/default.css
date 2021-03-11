@@ -13,6 +13,7 @@ section.header h1 {
 
 }
 header {
+    text-indent: 0;
     flex-shrink: 0;
 }
 
@@ -28,6 +29,9 @@ section > p {
     padding: 0 5rem;
 }
 
+.post-arrow {
+    color: cyan;
+}
 #page-container {
     position:relative;
     width: 100%;
@@ -75,7 +79,7 @@ hr {
 }
 
 nav {
-    width: min(40rem, 80%);
+    /* width: min(40rem, 80%); */
     margin: 0 auto;
     display: flex;
     flex-flow: row wrap;
@@ -99,6 +103,7 @@ nav a  {
     text-decoration:none;
     text-transform:uppercase;
     flex-grow: 1;
+    margin: 0 0.5rem;
     }
 
 a:link  {
@@ -194,6 +199,7 @@ footer a {
 
 #footer-text {
     width: 90%;
+    margin-bottom: 0.5rem;
 }
 
 #footer-contact {
@@ -217,11 +223,6 @@ footer a {
     width: 1rem;
     position: relative;
     display: inline-block;
-}
-
-
-footer #footer-text {
-    margin-bottom: 0.5rem;
 }
 
 iframe {
@@ -262,7 +263,7 @@ h2 {
 .logo {
     display: inline-block;
     position: relative;
-    left: 48%;
+    left: 50%;
     transform: translateX(-50%);
     text-align: center;
     /* text-shadow: 0.1rem 0.1rem magenta, 0.18rem 0.18rem yellow, -0.10rem -0.10rem cyan; */
@@ -361,10 +362,13 @@ h2 {
     }
     nav {
         width: 100%;
+        justify-content: space-evenly;
     }
     nav a {
-        width: auto;
+        /* flex: 1 1 auto; */
+        /* width: auto; */
         text-align: center;
+        font-size: 1.2rem;
     }
     footer {
         line-height: 1rem;
@@ -382,10 +386,11 @@ h2 {
     }
 
     nav {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     };
 
     nav a {
+        flex-basis: 50%;
         font-size: 1.8rem;
         margin:0 0 0 0;
         display:inline;
@@ -405,11 +410,12 @@ h2 {
 }
 @media only screen and (max-device-width: 480px) {
     header {
-        margin-top: 0.8em;
-        /* margin-bottom: -0.8em; */
         width: 100%;
         height: auto;
         /* max-height: 30%; */
+    }
+    #content {
+        padding-bottom: 0;
     }
     .logo a {
         display: block;
@@ -418,7 +424,7 @@ h2 {
         margin-top: 0; 
     }
     footer {
-        margin-bottom: 0;
+        margin-bottom: -0.5rem;
     }
     #footer-container {
         padding: 0;

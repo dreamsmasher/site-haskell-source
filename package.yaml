@@ -17,6 +17,7 @@ dependencies:
   - pandoc-types
   - lens
   - tagsoup
+  - regex-tdfa
 
 library:
   source-dirs: src
