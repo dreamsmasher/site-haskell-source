@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 05420b31ac75bd30472447020aebef47b8d2355bc754b70fe88d03fc26210a0e
+-- hash: 60da1159fd42c133a3e9196a80e54ffb4d0eec8b9143a737c1d06d5ee2119504
 
 name:           nliu-net
 version:        1.0
@@ -22,6 +22,7 @@ library
   exposed-modules:
       Contexts
       CSS
+      Utils
   other-modules:
       Paths_nliu_net
   hs-source-dirs:

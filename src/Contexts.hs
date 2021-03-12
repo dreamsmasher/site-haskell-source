@@ -117,6 +117,10 @@ getItemUTC' locale name id' = do
                , "%b %d, %Y"
                ]
 
+
+notPost :: Context a
+notPost = boolField "notPost" (const True)
+
 -- these are modified from Hakyll so that we can apply url relativization to content attr
 -- TODO PR the "content" edit
 
@@ -153,3 +157,9 @@ siteUrl = "https://nliu.net/"
 
 ogImage :: FilePath
 ogImage = "/images/nliu-logo.png"
+
+
+postTemplate :: Identifier
+defTemplate  :: Identifier
+postTemplate = "templates/post.html"
+defTemplate = "templates/default.html"
