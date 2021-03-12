@@ -1,7 +1,6 @@
 {-# LANGUAGE BlockArguments, OverloadedStrings, LambdaCase #-}
 module Utils where
 import Text.Pandoc.Walk
-import Text.Pandoc.Extensions
 import Text.Pandoc
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -25,17 +24,9 @@ getClasses (_, c, _) = c
 syms :: Set Char
 syms = S.fromList "<>{}()?+-/*=!@#$%^&|._" 
 
--- more stuff modified from hakyll....
 -- we need to hook into the raw string before passing it into pandoc
--- TODO delete after PR merged
-pandocTransform 
-    :: ReaderOptions 
-    -> WriterOptions 
-    -> (Pandoc -> Compiler Pandoc) 
-    -> Item String 
-    -> Compiler (Item String)
-pandocTransform r w f = readPandocWith r >=> traverse f >=> pure . writePandocWith w 
 
+-- TODO use parsec for this if more AST conversions get added
 walkPandocAST :: Pandoc -> Pandoc
 walkPandocAST = walk transform
     where 

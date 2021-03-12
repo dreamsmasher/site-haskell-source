@@ -18,6 +18,7 @@ dependencies:
   - lens
   - tagsoup
   - regex-tdfa
+  - hsass
 
 library:
   source-dirs: src

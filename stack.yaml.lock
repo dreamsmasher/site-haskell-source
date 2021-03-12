@@ -5,12 +5,121 @@
 
 packages:
 - completed:
-    hackage: hakyll-4.13.4.0@sha256:d97cb1b1cf7b901ce049e6e0aa5b1ac702cf52d2e475f5d3fe2de3694bb7dc7b,8867
+    name: hakyll
+    version: 4.13.4.1
+    git: https://github.com/jaspervdj/hakyll.git
     pantry-tree:
-      size: 7841
-      sha256: e31b612480429149bd2c042dd49cdb1a5eb9c807d4acce4a971a6da3d6f5db81
+      size: 12191
+      sha256: fa526cd97f8882cef4b9487e03adb1f60e3172bd5eaf5ce7ff628f994d4ec408
+    commit: b54212c7e2b8a84f95815e93a13223e1525c4f85
   original:
-    hackage: hakyll-4.13.4.0
+    git: https://github.com/jaspervdj/hakyll.git
+    commit: b54212c7e2b8a84f95815e93a13223e1525c4f85
+- completed:
+    hackage: hsass-0.8.0@sha256:05fb3d435dbdf9f66a98db4e1ee57a313170a677e52ab3a5a05ced1fc42b0834,2899
+    pantry-tree:
+      size: 1448
+      sha256: b25aeb947cb4e0b550f8a6f226d06503ef0edcb54712ad9cdd4fb2b05bf16c7c
+  original:
+    hackage: hsass-0.8.0@sha256:05fb3d435dbdf9f66a98db4e1ee57a313170a677e52ab3a5a05ced1fc42b0834,2899
+- completed:
+    hackage: hlibsass-0.1.10.1@sha256:08db56c633e9a83a642d8ea57dffa93112b092d05bf8f3b07491cfee9ee0dfa5,2565
+    pantry-tree:
+      size: 11229
+      sha256: 39b62f1f3f30c5a9e12f9c6a040d6863edb5ce81951452e649152a18145ee1bc
+  original:
+    hackage: hlibsass-0.1.10.1@sha256:08db56c633e9a83a642d8ea57dffa93112b092d05bf8f3b07491cfee9ee0dfa5,2565
+- completed:
+    hackage: pandoc-2.11.3.2@sha256:91fdb9b8e3fbb2269bc1d17f7dddb35085330600f6040895d706eb09a2e8d812,39694
+    pantry-tree:
+      size: 117362
+      sha256: 3df5c55ec7f389dfba6fdcbc2ef169093d2658966d791588058cd503ba8639c3
+  original:
+    hackage: pandoc-2.11.3.2@sha256:91fdb9b8e3fbb2269bc1d17f7dddb35085330600f6040895d706eb09a2e8d812,39694
+- completed:
+    hackage: citeproc-0.3.0.4@sha256:e60623607dbb5b18ae66da145e0ec883435eab729255e0b64c358d3a9d748c73,5590
+    pantry-tree:
+      size: 79427
+      sha256: b483492aecd59698436cd9734d49fe68eafe1334c7fbba3a34d7c32db4c858ad
+  original:
+    hackage: citeproc-0.3.0.4@sha256:e60623607dbb5b18ae66da145e0ec883435eab729255e0b64c358d3a9d748c73,5590
+- completed:
+    hackage: commonmark-0.1.1.3@sha256:e3af411216448fe61cc36d2d5dbffd85c9f714761f1a47ae0a9c611babf72ea7,3278
+    pantry-tree:
+      size: 1346
+      sha256: e44a0ad499cddb3556f4cc83c030085b763c87ecab91c744a515cd8d9f721779
+  original:
+    hackage: commonmark-0.1.1.3@sha256:e3af411216448fe61cc36d2d5dbffd85c9f714761f1a47ae0a9c611babf72ea7,3278
+- completed:
+    hackage: commonmark-extensions-0.2.0.4@sha256:6a437bcfa3c757af4262b71336513619990eafb5cfdc33e57a499c93ad225608,3184
+    pantry-tree:
+      size: 2928
+      sha256: ac8993e356edabc65a40d6c6909696c5f2dfe2a5298089da820c29ca75852360
+  original:
+    hackage: commonmark-extensions-0.2.0.4@sha256:6a437bcfa3c757af4262b71336513619990eafb5cfdc33e57a499c93ad225608,3184
+- completed:
+    hackage: commonmark-pandoc-0.2.0.1@sha256:529c6e2c6cabf61558b66a28123eafc1d90d3324be29819f59f024e430312c1f,1105
+    pantry-tree:
+      size: 326
+      sha256: d9954a15f73c8fe55a5097e1cc0957fa626d340ef36e2beefb8caae66008c3dc
+  original:
+    hackage: commonmark-pandoc-0.2.0.1@sha256:529c6e2c6cabf61558b66a28123eafc1d90d3324be29819f59f024e430312c1f,1105
+- completed:
+    hackage: doctemplates-0.9@sha256:eb0bf957ba8571746f36f07ceca43d311a0e390a9fdcfde6909f9f9be85b3b28,3125
+    pantry-tree:
+      size: 2421
+      sha256: db06db0bf8c9620f4fc4884e154848046827fabd43d31fb4b56b419793b9fd35
+  original:
+    hackage: doctemplates-0.9@sha256:eb0bf957ba8571746f36f07ceca43d311a0e390a9fdcfde6909f9f9be85b3b28,3125
+- completed:
+    hackage: jira-wiki-markup-1.3.2@sha256:b5f0901208a0ee07aff60f5356aeb851b7aa7950c75a18a15fd34247a35886d8,3819
+    pantry-tree:
+      size: 1180
+      sha256: 90fa545210a211b8ec88b59f92fe2877ebf2f9e55e2ce2fba6103a3615bd0ab9
+  original:
+    hackage: jira-wiki-markup-1.3.2@sha256:b5f0901208a0ee07aff60f5356aeb851b7aa7950c75a18a15fd34247a35886d8,3819
+- completed:
+    hackage: pandoc-types-1.22@sha256:15512ce011555ee720820f11cac0598317293406da5812337cbb1550d144e3bd,4071
+    pantry-tree:
+      size: 737
+      sha256: 28e43150f4bb0d4d880cf92ade20fefcd8705ee95cfe4a1d0bb5efd320982a9d
+  original:
+    hackage: pandoc-types-1.22@sha256:15512ce011555ee720820f11cac0598317293406da5812337cbb1550d144e3bd,4071
+- completed:
+    hackage: skylighting-0.10.2@sha256:9c395703ca61752f4491044443e87d5b87ed94bca78c0a00b5ebf4e4b8e59904,10031
+    pantry-tree:
+      size: 10836
+      sha256: 43df2573383f05aec7cb961cff4d4f428d8cb1020ea5f4cc3d602a74f78bf668
+  original:
+    hackage: skylighting-0.10.2@sha256:9c395703ca61752f4491044443e87d5b87ed94bca78c0a00b5ebf4e4b8e59904,10031
+- completed:
+    hackage: skylighting-core-0.10.2@sha256:5070d9f08135cdb7c935c5936a4a76a9e1922ec846cd40d6e2837f42e7a9f29f,8159
+    pantry-tree:
+      size: 13518
+      sha256: d785717a91386c1b1dadc63305d296de3f05b26c17811336a19db374b4e06651
+  original:
+    hackage: skylighting-core-0.10.2@sha256:5070d9f08135cdb7c935c5936a4a76a9e1922ec846cd40d6e2837f42e7a9f29f,8159
+- completed:
+    hackage: texmath-0.12.1@sha256:57d2ff00f89da2a56f10eda28c6c502e1314a35090c7f63600f6d7b0adedbc29,6563
+    pantry-tree:
+      size: 274279
+      sha256: 2cd8ba4eab6a21690b00a98e556907dc9aca9892b245fed7932be5d1955d0aea
+  original:
+    hackage: texmath-0.12.1@sha256:57d2ff00f89da2a56f10eda28c6c502e1314a35090c7f63600f6d7b0adedbc29,6563
+- completed:
+    hackage: hslua-1.2.0@sha256:6992fa588bd73866dba332593a35c17be325fd359f787ecb669589815a4095c8,11023
+    pantry-tree:
+      size: 7715
+      sha256: c91eedb82abaeac285a45b6571de5ab7dd0b70f4a9d406ef1cc6d092bcc6c56d
+  original:
+    hackage: hslua-1.2.0@sha256:6992fa588bd73866dba332593a35c17be325fd359f787ecb669589815a4095c8,11023
+- completed:
+    hackage: rfc5051-0.2@sha256:da5d77731f2ac6fe313a67919419b0833e09cd7f1a81869ed82a54dbf8962bf2,1678
+    pantry-tree:
+      size: 446
+      sha256: 191a30a13590a14dc8f606ff945298fee6afbb093a49bc5db71dbaf066f01930
+  original:
+    hackage: rfc5051-0.2@sha256:da5d77731f2ac6fe313a67919419b0833e09cd7f1a81869ed82a54dbf8962bf2,1678
 snapshots:
 - completed:
     size: 532382

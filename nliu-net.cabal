@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 60da1159fd42c133a3e9196a80e54ffb4d0eec8b9143a737c1d06d5ee2119504
+-- hash: c692d31826b5a102c4336f9460b44333a48c5bb853eeef3c117d3d0203a0a792
 
 name:           nliu-net
 version:        1.0
@@ -22,6 +22,7 @@ library
   exposed-modules:
       Contexts
       CSS
+      Sass
       Utils
   other-modules:
       Paths_nliu_net
@@ -34,6 +35,7 @@ library
     , containers
     , filepath
     , hakyll
+    , hsass
     , lens
     , pandoc
     , pandoc-types
@@ -59,6 +61,7 @@ executable nliu-exe
     , containers
     , filepath
     , hakyll
+    , hsass
     , lens
     , nliu-net
     , pandoc

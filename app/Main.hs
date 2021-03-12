@@ -94,7 +94,8 @@ initialTransforms :: Compiler (Item String)
 initialTransforms = getResourceBody >>= applyAsTemplate funcFields
 
 customPandoc :: Item String -> Compiler (Item String)
-customPandoc = pandocTransform readerConfig writerConfig (pure . walkPandocAST)
+customPandoc = renderPandocWithTransform readerConfig writerConfig walkPandocAST
+    -- my contribution to Hakyll :DDDD
 
 customExts :: Extensions -- pandoc options
 customExts = pandocExtensions `mappend` extensionsFromList 
