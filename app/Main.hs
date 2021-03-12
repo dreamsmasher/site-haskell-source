@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-{-# LANGUAGE RankNTypes, BlockArguments, OverloadedStrings, LambdaCase #-}
+{-# LANGUAGE RankNTypes, BlockArguments, OverloadedStrings #-}
 module Main where
 
 import           Data.Monoid (mappend)
@@ -19,6 +19,7 @@ import           Text.Printf (printf)
 import CSS
 import Contexts
 import Utils
+import Sass
 --------------------------------------------------------------------------------
 
 main :: IO ()
@@ -43,9 +44,16 @@ main = do
         route   idRoute
         compile copyFileCompiler
 
-    match "css/*" do
+    match "css/*.css" do
         route   idRoute
         compile compressCssCompiler
+
+    match "css/*.scss" do
+        route sassRoute
+        compile 
+            $ initialTransforms
+            >>= runSassBody
+            >>= withItemBody (pure . compressCss) 
 
     match (fromGlob "siteroot/*.md") do
         route moveToRoot

@@ -26,6 +26,8 @@ library:
   default-extensions:
     - LambdaCase
     - OverloadedStrings
+    - BlockArguments
+    - MultiWayIf
 
 executables:
   nliu-exe:

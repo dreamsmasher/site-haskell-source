@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c692d31826b5a102c4336f9460b44333a48c5bb853eeef3c117d3d0203a0a792
+-- hash: 1635fe127aada9d6c370e63cf15bfad3cfcf3ede726a31fba3eba81a8d9b2e22
 
 name:           nliu-net
 version:        1.0
@@ -28,7 +28,7 @@ library
       Paths_nliu_net
   hs-source-dirs:
       src
-  default-extensions: LambdaCase OverloadedStrings
+  default-extensions: LambdaCase OverloadedStrings BlockArguments MultiWayIf
   build-depends:
       base >=4.9 && <5
     , clay
