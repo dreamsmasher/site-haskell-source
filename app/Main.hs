@@ -51,8 +51,8 @@ main = do
     match "css/*.scss" do
         route sassRoute
         compile 
-            $ initialTransforms
-            >>= runSassBody
+            $ getResourceFilePath -- for better error messages
+            >>= runSassFile
             >>= withItemBody (pure . compressCss) 
 
     match (fromGlob "siteroot/*.md") do

@@ -10,6 +10,8 @@ module Sass
 where
 
 import Text.Sass
+import Control.Monad
+import Control.Arrow
 import Hakyll
 
 compileSass 
@@ -19,7 +21,7 @@ compileSass
     -> String
     -> Compiler a
 compileSass f act opts s = unsafeCompiler (f s opts)
-    >>= either (fail . show) act
+    >>= either (errorMessage >>> unsafeCompiler >=> fail) act
 
 sassFileCompiler :: SassOptions -> FilePath -> Compiler (Item String)
 sassFileCompiler = compileSass compileFile makeItem
