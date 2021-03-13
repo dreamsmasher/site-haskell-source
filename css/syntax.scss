@@ -1,0 +1,133 @@
+// currently, hsass doens't seem to support @use statements for local modules.
+$pastelyellow: #ffff55;
+
+@mixin monofont {
+    font-family:
+    "Fira Code SemiBold"
+      , "Fira Code"
+      , "DejaVu Sans Mono"
+      , "Iosevka"
+      ,  "Menlo"
+      , "Monaco"
+      , "Andale Mono"
+      , "Nimbus Mono L"
+      , "Lucida Console"
+      , monospace;
+}
+
+// 
+a.sourceLine { 
+    display: inline-block;
+    line-height: 1.25; 
+    pointer-events: none;
+    color: inherit;
+    text-decoration: inherit; 
+    &:empty {
+        height: 1.2em;
+    }
+}
+
+.sourceCode {
+    color: white;
+    text-indent: initial;
+    margin: 1em 0;
+    line-height: 1.2em;
+    overflow: auto;
+}
+
+@each $s, $c in ((type, #ffff55), (mod, rgb(255,125,18)), (op, rgb(35,255,90))) {
+    .inline-#{$s} {
+        color: $c;
+        font-size: inherit;
+    }
+}
+
+pre { 
+    @include monofont();
+    margin: 0; 
+    padding: 0.8em;
+    white-space: pre-wrap;
+    text-align: left;
+    border: {
+        style: dashed;
+        color: white;
+        width: 2px;
+    }
+    .numberSource a.sourceLine {
+        position: relative;
+        // left: -4em;
+        &:before {
+            content: attr(title);
+            position: relative;
+            left: -1em;
+            text-align: right;
+            vertical-align: baseline;
+            border: none;
+            pointer-events: all;
+            display: inline-block;
+            // @each $prov in (-webkit-, -khtml-, -moz-, -ms-, '') {
+            //     #{$prov}user-select: none;
+            // }
+            -webkit-touch-callout: none;
+            padding: 0 4px;
+            color: #aaaaaa;
+        }
+    }
+}
+
+// 
+@media print {
+    code.sourceCode { white-space: pre-wrap;};
+    a.sourceLine {padding-left: 1em};
+}
+@media screen {
+    a.sourceLine::before { text-decoration: underline;}
+    div.sourceCode { 
+        /* overflow-wrap: break-word; */
+        display: block;
+    }
+}
+
+code {
+    color: cyan;
+    font-family: inherit;
+    
+    .sourceCode { 
+        white-space: pre;
+        position: relative;
+        font-size: 0.8rem;
+    }
+    span {
+        .al { color: #00aaaa; font-weight: bold; } /* Alert */
+        .an { color: yellow; font-weight: bold; font-style: italic; } /* Annotation */
+        .at { color: #aa00aa; } /* Attribute */
+        .bn { color: #55ff55; } /* BaseN */
+        .bu { color: $pastelyellow;} /* BuiltIn */
+        .cf { color: rgb(81, 249, 255); font-weight: bold; } /* ControlFlow */
+        .ch { color: #4070a0; } /* Char */
+        .cn { color: #880000; } /* Constant */
+        .co { color: #60a0b0; font-style: italic; } /* Comment */
+        .cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+        .do { color: #ba2121; font-style: italic; } /* Documentation */
+        .dt { color: #00aaaa; } /* DataType */
+        .dv { color: #00aaaa; } /* DecVal */
+        .er { color: #ff0000; font-weight: bold; } /* Error */
+        .ex { } /* Extension */
+        .fl { color: #55ff55; } /* Float */
+        .fu { color: rgb(241, 29, 248); } /* Function */
+        .im { } /* Import */
+        .in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+        .kw { color: #ff55ff; font-weight: bold; } /* Keyword */
+        .op { color: #aad4b3; } /* Operator */
+        .ot { color: #55ffff; } /* Other */
+        .pp { color: #ffffff; } /* Preprocessor */
+        .sc { color: #4070a0; } /* SpecialChar */
+        .ss { color: #bb6688; } /* SpecialString */
+        .st { color: #5555ff; } /* String */
+        .va { color: #19177c; } /* Variable */
+        .vs { color: #4070a0; } /* VerbatimString */
+        .wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    
+    
+    }
+}

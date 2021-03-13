@@ -29,7 +29,8 @@
 }
 html {
   font: {
-    family: "Fira Code SemiBold"
+    family: 
+    "Fira Code SemiBold"
       , "Fira Code"
       , "DejaVu Sans Mono"
       , "Iosevka"
@@ -95,7 +96,9 @@ section > p {
 ol {
   overflow-wrap: break-word;
   text-indent: 0;
+  // padding: 0 5rem;
 }
+
 em {
   overflow-wrap: break-word;
 }
@@ -398,6 +401,9 @@ $breakpoint-large: 1000px;
     max-width: 80ex;
   }
 
+  ol {
+    padding-inline-start: 2rem;
+  }
   nav {
     font-size: 1.2rem;
   }

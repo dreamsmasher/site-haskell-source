@@ -1,0 +1,62 @@
+// unused for now
+@mixin monofonts {
+  font-family
+    : "Fira Code SemiBold"
+    , "Fira Code"
+    , "DejaVu Sans Mono"
+    , "Iosevka"
+    ,  "Menlo"
+    , "Monaco"
+    , "Andale Mono"
+    , "Nimbus Mono L"
+    , "Lucida Console"
+    , monospace
+    ;
+}
+
+
+// fancy colours
+$blackground:#121111;
+$pastelyellow: #ffff55;
+$lightcyan: #00aaaa;
+
+$breakpoint-smallest: 319px;
+$breakpoint-medium: 639px;
+$breakpoint-large: 1000px;
+$phone: 480px;
+
+@mixin all($val, $props...) {
+  @each $prop in $props {
+    #{$prop}: $val;
+  }
+}
+
+@mixin automgn{
+  margin: 0 auto;
+} 
+
+@mixin flex1row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+@mixin relInlBlk {
+  position: relative;
+  display: inline-block;
+}
+
+@mixin centerTxt {
+  text: {
+    align: center;
+  }
+}
+
+@mixin logo-shadow($n) {
+  $n1: -1rem * $n;
+  $n2: -2rem * $n;
+  $n3: -3rem * $n;
+  // how do i apply a list of args as a property
+  text-shadow: $n1 $n1 cyan, $n2 $n2 yellow, $n3 $n3 magenta;
+}
