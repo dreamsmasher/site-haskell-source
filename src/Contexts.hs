@@ -19,6 +19,9 @@ import Text.Printf (printf)
 import Debug.Trace
 import qualified Text.HTML.TagSoup as TS
 
+import qualified Data.Set as S
+import Data.Bits
+
 showtrace :: Show a => a -> a
 showtrace = show >>= trace
 

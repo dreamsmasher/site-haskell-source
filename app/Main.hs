@@ -34,7 +34,6 @@ main = do
           >>= loadAndApplyTemplate postTemplate postsCtx'
           >>= loadAndApplyTemplate defTemplate postsCtx'
           >>= relativizeUrls'
-
   hakyllWith config do
     match (fromList ["CNAME", "site.webmanifest"]) do
         route idRoute
@@ -119,3 +118,6 @@ customExts = pandocExtensions `mappend` extensionsFromList
 -- for debugging
 traceComp :: Show t => t -> Compiler t
 traceComp x = unsafeCompiler (liftM2 (>>) print pure x)
+
+applyNTimes 0 _ = id
+applyNTimes n f = f . applyNTimes (n - 1) f
