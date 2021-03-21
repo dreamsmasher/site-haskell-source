@@ -194,12 +194,14 @@ newtype Church a = Church {runChurch :: (a -> a) -> (a -> a)}
 
 one :: Church a
 one = Church $ \f x -> f x
+  -- Church ($)
 
 two :: Church a
 two = Church $ \f x -> f (f x)
 
 instance Semigroup (Church a) where
-    church <> dhurch = Church $ \f -> runChurch c f . runChurch d f
+    church <> dhurch = Church  
+      $ \f -> runChurch church f . runChurch dhurch f
 
 instance Monoid (Church a) where
     mempty = Church (\_ x -> x)
