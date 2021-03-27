@@ -26,14 +26,6 @@ main :: IO ()
 main = do
   baseCtx <- buildBaseCtx
   let postsCtx' = postsCtx <> baseCtx
-      buildPost = do
-        route $ setExtension "html"
-        compile 
-          $ getResourceBody 
-          >>= customPandoc
-          >>= loadAndApplyTemplate postTemplate postsCtx'
-          >>= loadAndApplyTemplate defTemplate postsCtx'
-          >>= relativizeUrls'
   hakyllWith config do
     match (fromList ["CNAME", "site.webmanifest"]) do
         route idRoute
@@ -62,8 +54,8 @@ main = do
             >>= loadAndApplyTemplate "templates/default.html" baseCtx
             >>= relativizeUrls'
 
-    match "posts/*" buildPost
-    match "drafts/*.md" buildPost
+    match "posts/*" $ buildPost postsCtx'
+    match "drafts/*.md" $ buildPost postsCtx'
 
     mapM_ (\t -> uncurryN mkListPage t postsCtx' [baseCtx])
         [ ("archive.html", "posts/*", "posts", "Archives", "templates/archive.html") 
@@ -84,6 +76,7 @@ main = do
                 >>= applyAsTemplate indexCtx 
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls'
+
 
     match "templates/*" $ compile templateBodyCompiler
 
@@ -119,5 +112,12 @@ customExts = pandocExtensions `mappend` extensionsFromList
 traceComp :: Show t => t -> Compiler t
 traceComp x = unsafeCompiler (liftM2 (>>) print pure x)
 
-applyNTimes 0 _ = id
-applyNTimes n f = f . applyNTimes (n - 1) f
+buildPost :: Context String -> Rules ()
+buildPost postsCtx' = do
+    route $ setExtension "html"
+    compile 
+        $ getResourceBody 
+        >>= customPandoc
+        >>= loadAndApplyTemplate postTemplate postsCtx'
+        >>= loadAndApplyTemplate defTemplate postsCtx'
+        >>= relativizeUrls'

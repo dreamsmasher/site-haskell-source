@@ -10,7 +10,6 @@ import Hakyll.Core.Identifier
 import Data.List
 import Data.Maybe
 import Data.Char (toUpper, toLower)
-import Data.Monoid
 import Control.Monad
 import Control.Applicative
 import Control.Arrow
@@ -33,6 +32,7 @@ buildBaseCtx = do
     (year, _) <- toOrdinalDate . utctDay <$> getCurrentTime
     pure $ constField "currentYear" (show year) 
          <> field "absUrl" fmtUrl
+         <> maybeField id "series"
          <> constField "blurb" (show siteBlurb) -- to prevent globbing
          <> constField "ogImage" ogImage
          <> defaultContext
