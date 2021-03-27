@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1635fe127aada9d6c370e63cf15bfad3cfcf3ede726a31fba3eba81a8d9b2e22
+-- hash: 8f6af6a24024e9f9dea1ba504f51a79c7f8584180215d57b57ef88ffedcb985a
 
 name:           nliu-net
 version:        1.0
@@ -20,6 +20,7 @@ source-repository head
 
 library
   exposed-modules:
+      Array
       Contexts
       CSS
       Sass
@@ -32,9 +33,11 @@ library
   build-depends:
       base >=4.9 && <5
     , clay
+    , comonad
     , containers
     , filepath
     , hakyll
+    , hashable
     , hsass
     , lens
     , pandoc
@@ -45,6 +48,7 @@ library
     , time
     , time-locale-compat >=0.1.1
     , tuple
+    , unordered-containers
   default-language: Haskell2010
 
 executable nliu-exe
@@ -58,9 +62,11 @@ executable nliu-exe
   build-depends:
       base >=4.9 && <5
     , clay
+    , comonad
     , containers
     , filepath
     , hakyll
+    , hashable
     , hsass
     , lens
     , nliu-net
@@ -72,4 +78,5 @@ executable nliu-exe
     , time
     , time-locale-compat >=0.1.1
     , tuple
+    , unordered-containers
   default-language: Haskell2010

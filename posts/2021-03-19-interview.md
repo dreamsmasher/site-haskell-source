@@ -1,13 +1,20 @@
 ---
 title: "subverting the software interview"
 published: 2021-03-19
-last: 2021-03-19
+last: 2021-03-26
 author: Norman Liu
 ---
 
+<style>
+.prob-title {
+    color: cyan;
+    font-size: 2rem;
+}
+</style>
+
 <span style="color: yellow">Inspired by [Kyle Kingsbury's](https://aphyr.com/posts/340-reversing-the-technical-interview) [series](https://aphyr.com/posts/341-hexing-the-technical-interview) [on](https://aphyr.com/posts/342-typing-the-technical-interview) [software](https://aphyr.com/posts/353-rewriting-the-technical-interview) [magick](https://aphyr.com/posts/354-unifying-the-technical-interview).</span>
 
-Cans. Cans everywhere. Some alcoholic, some diabetic, all of them eclectic. Remnants of nights long gone, spent hunched over in front of the pale glow of a text editor. Time you'll never recover, lost to the ethereal dance of progress. There's an old pizza box in the corner, a faint memory of a lonely meal. You miss being able to go out and eat. More specifically, you miss having the cash to do so. You think back to a happier period in your life, one where your wallet was unbare, and the numbers on your bank statement left no negative space for interpretation. Those times are gone, and you're desperate for the chance to be able to feed yourself again.
+Cans. Cans everywhere. Some alcoholic, some diabetic, all of them eclectic. Remnants of nights long gone, spent hunched over in front of the pale glow of a text editor. Time you'll never recover, lost to the ethereal dance of progress. There's an old pizza box in the corner, a faint memory of a lonely meal. You miss being able to go out and eat. More specifically, you miss having the cash to do so. You think back to a happier period in your life, one where your wallet was unbare, and the numbers on your bank statement left no negative space for interpretation. Those times are gone, and you're desperate for the chance to be able to feed yourself again. You've conjured software magick for most of your life; regretfully, your supernatural programming ability is hindered by mortal desires like eating and not being homeless. 
 
 You came across a posting one night, one that offered the prospect of potential employment. The words of the HR manager echoed softly in your ears - among the sea of corporate jargon, unrealistic requirements, and a slightly boring job description, your eyes lit up when they scanned the salary range. Across the gossamer threads of the internet, where datagrams twirl and spin across fibre-optic highways, this one reached your browser, and by extension - your soul. It's enough money to shop at Whole Foods without selling a kidney. You jump back, your posture restored by the rejuvinating shock of motivation, and fire your resume across the void.
 
@@ -240,4 +247,4 @@ fizzbuzz n = take n $ zipWith pick fizzbuzzes [1..]
 
 "Awesome", he says. His expression doesn't match his words. You make a mental note to watch out for Dave at work - he seems like the Janus type. He also *really* didn't seem to like your 20-minute monoid lecture to explain FizzBuzz. You try to salvage the situation by mentioning the space-efficiency of your solution, since both `fizzes` and `buzzes` are in constant-applicative form, but he looks like he's had a long day already.
 
-You didn't get the job. Next time, you'll try to keep it even simpler. Maybe you'll use free monoids?
+Dave tells you, "We'll get back to you when we make a decision." and logs off. You don't feel too great about how the interview went, but least you didn't overengineer this time. 
