@@ -22,9 +22,15 @@ dependencies:
   - tagsoup
   - regex-tdfa
   - hsass
+  - transformers
+  - array
+  - free
+  - mtl
 
 library:
-  source-dirs: src
+  source-dirs: 
+  - src
+  - drafts
 
   default-extensions:
     - LambdaCase
