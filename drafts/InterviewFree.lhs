@@ -155,7 +155,7 @@ showBasic = mapM_ putStrLn . reverse . lines . printAST
 forTest = FOR (X:=1) TO 10
 forStepTest = FOR (X:=1) TO 10 `STEP` 3
 
-data IndexedCont = IC {
+data IndexedCont = IndexedContinuation {
   basicExp :: BASICExpr,
   cont :: BVM ()
 }
@@ -217,11 +217,9 @@ bvmTell = BVM . lift . lift . tell
 runBASIC :: BASIC () -> IO (Either BASICError Log)
 runBASIC b = do
   ref <- newIORef emptyState 
-  log <- execWriterT . (`runReaderT` ref) .  evalContT . runBVM . reifyStart $ iterBASIC b
+  log <- execWriterT . (`runReaderT` ref) .  evalContT . runBVM . reifyStart $ foldBASIC b
   (`handleErr` log) <$> readIORef ref
   where handleErr basicState log = maybe (Right log) Left $ basicError basicState
-        iterBASIC :: BASIC () -> BVM ()
-        iterBASIC = foldFree go
         -- interpreter runs in 2 phases: 
           -- 1. indexing all BASICExpr+continuations by line number
           -- 2. jumping back to the beginning, and interpreting expressions now that we have the entire program indexed
@@ -230,26 +228,28 @@ runBASIC b = do
           callCC \k -> do
             -- reify starting continuation so we can jump back to the top
             modify' \bst -> bst {startCont = k ()}
-          let chgPhase p = modify' \bst -> let
+          gets vmPhase >>= \case
+            Load -> do
+              prog
+              modify' \bst -> let
                 (keys, conts) = unzip . M.assocs $ instr bst
                 -- shift continuations so that their number is aligned with their own cont
                 conts' = M.fromList (zip (tail keys) conts)
                 in bst {vmPhase = Run, instr = conts'}
-          gets vmPhase >>= \case
-            Load -> do
-              prog
-              chgPhase Run
               join $ gets startCont
             Run -> do 
               instr <- gets instr
               prog
 
+        foldBASIC :: BASIC () -> BVM ()
+        foldBASIC = foldFree go
+        
         go :: BASICFree a -> BVM a
         go (BASICFree line exp next) = do
           callCC \k -> do
             gets vmPhase >>= \case
               Load -> do
-                let ic = IC exp (k ()) 
+                let ic = IndexedContinuation exp (k ()) 
                 instr' <- gets (M.insert line ic . instr)
                 modify' \bst -> bst {instr = instr'}
               Run -> do
@@ -291,7 +291,7 @@ runFor lhs rhs end step = do
 interpretBASIC :: BASICExpr -> BVM ()
 interpretBASIC = \case
   GOTO line -> do
-     Just (IC e cont) <- gets (M.lookup line . instr)
+     Just (IndexedContinuation _ cont) <- gets (M.lookup line . instr)
      insts <- gets instr
      -- jump back to runBASIC::go
      cont
@@ -368,12 +368,9 @@ interpretBASIC = \case
       'p' -> show <$> gets vmPhase
       'e' -> show <$> gets basicError
     liftIO $ mapM_ putStrLn (lines s) 
-    pure ()
 
 (；) :: BASICExpr -> BASICExpr -> BASICExpr
 (；) = Inline
-
-xs = GOTO 10 ； PRINT "henlo" ； PRINT "bye"
 
 tst :: BASIC ()
 tst = do
@@ -387,8 +384,8 @@ tst = do
   60$ X:=0
   70$ X := X+1
   75$ PRINT X
-  80$ IF (X .= 10) THEN (GOTO 100)
-  85$ IF (X .= 5) THEN (PRINT X ； END)
+  80$ IF (X .= 10) THEN (GOTO 100) (f ())
+  85$ IF (X .= 5) THEN (PRINT X afjj END)
   90$ GOTO 70
   100 END
 
@@ -401,7 +398,7 @@ endTst = do
   17$ PRINT "I'm still here"
   20$ X := 0
   30$ Y := 1
-  40$ END
+  40 END
 
 goSubTest :: BASIC ()
 goSubTest = do
