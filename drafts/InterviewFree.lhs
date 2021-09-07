@@ -32,6 +32,7 @@ import Data.Traversable
 import Data.Dynamic
 import Control.Monad.Free
 import Control.Monad.Reader
+import Control.Monad.State
 import Control.Monad.Cont
 import Control.Monad.Trans.Cont ( evalContT )
 import Control.Monad.Trans.Class
@@ -121,7 +122,6 @@ bfTest = do
   15$ X := 1
   20$ FOR (Y:=2) TO X `STEP` 3 ； PRINT "Hello, " ； PRINT "World!"
   25$ NEXT Y
-  -- 30$ IF ()
   40$ A := PEEK(X)
   50$ POKE 10 X
   60$ A := PEEK(10)
@@ -184,22 +184,11 @@ data BASICError
   | HsError String
   deriving (Eq, Show)
 
-newtype BVM a = BVM {runBVM :: ContT () (ReaderT (IORef BASICState) (WriterT Log IO)) a} 
-  deriving (Functor, Applicative, Monad, MonadReader (IORef BASICState), MonadCont, MonadIO)
+newtype BVM a = BVM {runBVM :: ContT () (StateT BASICState (WriterT Log IO)) a} 
+  deriving (Functor, Applicative, Monad, MonadState BASICState, MonadCont, MonadIO)
 
-gets :: (BASICState -> a) -> BVM a
-gets f = do
-  st <- liftIO . readIORef =<< ask
-  pure $ f st
-
-get :: BVM BASICState
-get = gets id
-put :: (MonadReader (IORef a) m, MonadIO m) => a -> m ()
-put bs = ask >>= liftIO . (`writeIORef` bs)
-modify' :: (BASICState -> BASICState) -> BVM ()
-modify' f = gets f >>= put
-modify :: (BASICState -> BASICState) -> BVM ()
-modify = modify'
+bvmTell :: String -> BVM ()
+bvmTell = BVM . lift . lift . tell . output
 
 -- no catching errors in ContT
 throwError :: BASICError -> BVM a
@@ -211,14 +200,16 @@ throwError e = do
 instance MonadFail BVM where
   fail = throwError . HsError
 
-bvmTell :: Log -> BVM ()
-bvmTell = BVM . lift . lift . tell
-
 runBASIC :: BASIC () -> IO (Either BASICError Log)
-runBASIC b = do
-  ref <- newIORef emptyState 
-  log <- execWriterT . (`runReaderT` ref) .  evalContT . runBVM . reifyStart $ foldBASIC b
-  (`handleErr` log) <$> readIORef ref
+runBASIC = 
+  fmap (uncurry handleErr) 
+    . runWriterT 
+    . (`execStateT` emptyState) 
+    .  evalContT 
+    . runBVM 
+    . reifyStart 
+    . foldBASIC
+  
   where handleErr basicState log = maybe (Right log) Left $ basicError basicState
         -- interpreter runs in 2 phases: 
           -- 1. indexing all BASICExpr+continuations by line number
@@ -304,12 +295,11 @@ interpretBASIC = \case
     modify' \bst -> bst {stack = conts}
     cont
   PRINT x -> do
-    let puts = bvmTell . output
-        printBASIC (Lit n) = puts $ show n
-        printBASIC (Str s) = puts s
-        printBASIC pk@(PEEK p) = derefInt pk >>= puts . show
+    let printBASIC (Lit n) = bvmTell $ show n
+        printBASIC (Str s) = bvmTell s
+        printBASIC pk@(PEEK _) = derefInt pk >>= bvmTell . show
         printBASIC bv = gets (H.lookup bv . variables)
-          >>= traverse_ (puts . show) 
+          >>= traverse_ (bvmTell . show) 
     printBASIC x
   INPUT target -> do
     input <- Str <$> liftIO getLine
@@ -321,8 +311,11 @@ interpretBASIC = \case
       _ -> pure rhs
     vars' <- gets (H.insert lhs rhsActual . variables)
     modify \bst -> bst {variables = vars'}
-  FOR assign@(lhs := rhs) TO end -> runFor lhs rhs end 1
+
+  FOR (lhs := rhs) TO end -> runFor lhs rhs end 1
+
   STEP (FOR (lhs := rhs) TO end) step -> runFor lhs rhs end step
+
   NEXT lhs -> do
     ((name, lim, step, cont) : loops) <- gets loopStack
     unless (name == lhs) $ throwError (UninitializedVar lhs)
@@ -372,6 +365,7 @@ interpretBASIC = \case
 (；) :: BASICExpr -> BASICExpr -> BASICExpr
 (；) = Inline
 
+
 tst :: BASIC ()
 tst = do
   10$ FOR (A:=0) TO 10 ； PRINT "hi" ； NEXT A
@@ -384,8 +378,8 @@ tst = do
   60$ X:=0
   70$ X := X+1
   75$ PRINT X
-  80$ IF (X .= 10) THEN (GOTO 100) (f ())
-  85$ IF (X .= 5) THEN (PRINT X afjj END)
+  80$ IF (X .= 10) THEN (GOTO 100) 
+  85$ IF (X .= 5) THEN (PRINT X)
   90$ GOTO 70
   100 END
 
