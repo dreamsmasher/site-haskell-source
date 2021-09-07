@@ -26,17 +26,19 @@ dependencies:
   - array
   - free
   - mtl
+  - blaze-html
 
 library:
   source-dirs: 
   - src
   - drafts
 
-  default-extensions:
-    - LambdaCase
-    - OverloadedStrings
-    - BlockArguments
-    - MultiWayIf
+default-extensions:
+  - LambdaCase
+  - OverloadedStrings
+  - BlockArguments
+  - MultiWayIf
+  - ImportQualifiedPost
 
 executables:
   nliu-exe:

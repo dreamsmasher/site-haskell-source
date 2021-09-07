@@ -2,20 +2,20 @@
 {-# LANGUAGE RankNTypes, BlockArguments, OverloadedStrings #-}
 module Main where
 
-import           Data.Monoid (mappend)
-import           Hakyll
-import           Hakyll.Core.Configuration
-import           Text.Pandoc
-import           Text.Pandoc.Extensions
-import qualified Data.Text as T
-import           Data.Functor ((<&>))
-import           Data.Char (isUpper, isLower)
-import           Data.Tuple.Curry
-import           Control.Monad
-import           Control.Applicative
-import           Control.Lens (view, set, over, (^.), (%~), (.~))
-import qualified Hakyll.Core.Logger as L
-import           Text.Printf (printf)
+import Data.Monoid (mappend)
+import Hakyll
+import Hakyll.Core.Configuration
+import Text.Pandoc
+import Text.Pandoc.Extensions
+import Data.Text qualified as T
+import Data.Functor ((<&>))
+import Data.Char (isUpper, isLower)
+import Data.Tuple.Curry
+import Control.Monad
+import Control.Applicative
+import Control.Lens (view, set, over, (^.), (%~), (.~))
+import Hakyll.Core.Logger qualified as L
+import Text.Printf (printf)
 import CSS
 import Contexts
 import Utils

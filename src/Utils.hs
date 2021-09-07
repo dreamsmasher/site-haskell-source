@@ -14,6 +14,8 @@ import Data.Char (isUpper, isLower)
 import Data.Maybe
 
 import Contexts
+import Hakyll.Web.Template qualified as Web
+import System.Environment qualified as Env 
 
 addClass :: T.Text -> Attr -> Attr
 addClass klass = over _2 (klass :)

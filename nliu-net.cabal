@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: fe24cc6a9cd55f8b0283460c8da97ad16615b49fefaf2c86b3e5771297952e8a
+-- hash: 34c43b870cc30d1d4aafa922e293d34fdc099584cb8be0fdf88893f34caf2c86
 
 name:           nliu-net
 version:        1.0
@@ -31,10 +31,16 @@ library
   hs-source-dirs:
       src
       drafts
-  default-extensions: LambdaCase OverloadedStrings BlockArguments MultiWayIf
+  default-extensions:
+      LambdaCase
+      OverloadedStrings
+      BlockArguments
+      MultiWayIf
+      ImportQualifiedPost
   build-depends:
       array
     , base >=4.9 && <5
+    , blaze-html
     , clay
     , comonad
     , containers
@@ -63,11 +69,19 @@ executable nliu-exe
       Paths_nliu_net
   hs-source-dirs:
       app
-  default-extensions: LambdaCase OverloadedStrings
+  default-extensions:
+      LambdaCase
+      OverloadedStrings
+      BlockArguments
+      MultiWayIf
+      ImportQualifiedPost
+      LambdaCase
+      OverloadedStrings
   ghc-options: -threaded -O2
   build-depends:
       array
     , base >=4.9 && <5
+    , blaze-html
     , clay
     , comonad
     , containers
