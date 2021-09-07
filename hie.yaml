@@ -1,0 +1,16 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "nliu-net:lib"
+
+    - path: "./drafts"
+      component: "nliu-net:lib"
+
+    - path: "./posts"
+      component: "nliu-net:lib"
+
+    - path: "./app/Main.hs"
+      component: "nliu-net:exe:nliu-exe"
+
+    - path: "./app/Paths_nliu_net.hs"
+      component: "nliu-net:exe:nliu-exe"
