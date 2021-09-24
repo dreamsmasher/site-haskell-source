@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeApplications, OverloadedStrings, LambdaCase #-}
+{-# LANGUAGE TypeApplications, OverloadedStrings, LambdaCase, ScopedTypeVariables #-}
 
 module Contexts where
 
@@ -24,19 +24,18 @@ import Data.Bits
 showtrace :: Show a => a -> a
 showtrace = show >>= trace
 
-maxIndexPagePosts :: Int
-maxIndexPagePosts = 5
+maxIndexPagePosts :: Int = 5
 
 buildBaseCtx :: IO (Context String)
 buildBaseCtx = do
     (year, _) <- toOrdinalDate . utctDay <$> getCurrentTime
-    pure $ constField "currentYear" (show year) 
+    pure $ constField "currentYear" (show year)
          <> field "absUrl" fmtUrl
          <> maybeField id "series"
          <> constField "blurb" (show siteBlurb) -- to prevent globbing
          <> constField "ogImage" ogImage
          <> defaultContext
-    where fmtUrl = pure . (siteUrl <>) . toFilePath . itemIdentifier 
+    where fmtUrl = pure . (siteUrl <>) . toFilePath . itemIdentifier
 
 funcFields :: Context String
 funcFields = mconcat $ map (uncurry functionField)
@@ -50,10 +49,10 @@ postsCtx :: Context String
 postsCtx =  lastField
          <> keywordField
         -- <> dateField "published" "%Y-%m-%d"
-        --  <> defaultContext 
+        --  <> defaultContext
 
 fixDates :: String -> String
-fixDates = let replace c d = map (\x -> if x == c then d else x) in 
+fixDates = let replace c d = map (\x -> if x == c then d else x) in
                                  intercalate "-" . reverse . words . replace '-' ' '
     -- since the hakyll date compiler is wonky
     -- using words instead of splitAt to keep from pulling in Data.List.Split
@@ -61,7 +60,7 @@ fixDates = let replace c d = map (\x -> if x == c then d else x) in
 mkKeywords :: String -> String
 mkKeywords = intercalate ", " . map head . group . sort . words
 
-lastField :: Context String 
+lastField :: Context String
 lastField = dateField' "last" "%Y-%m-%d"
 
 -- this should really be a builtin function
@@ -80,9 +79,9 @@ dateField' :: --TimeLocale -- ^ Output time locale
                   String     -- ^ Key of date field (taken from and stored in this key)
                -> String     -- ^ Format to use on date
                -> Context a  -- ^ Resulting context
-dateField' key fmt = let df = defaultTimeLocale in 
+dateField' key fmt = let df = defaultTimeLocale in
     field key $ \i -> do
-        time <- getItemUTC' df key $ itemIdentifier i 
+        time <- getItemUTC' df key $ itemIdentifier i
         pure $ formatTime df fmt time
 
 getItemUTC' :: (MonadMetadata m, MonadFail m)
@@ -94,11 +93,11 @@ getItemUTC' :: (MonadMetadata m, MonadFail m)
 getItemUTC' locale name id' = do
     metadata <- getMetadata id'
     let strVal = lookupString name metadata
-        tryField fmt = strVal >>= parseTime' fmt 
+        tryField fmt = strVal >>= parseTime' fmt
         paths          = splitDirectories $ (dropExtension . toFilePath) id'
 
     maybe empty' pure . foldr1 (<|>) . map tryField $ formats
-        -- [tryField fmt | fmt <- formats] 
+        -- [tryField fmt | fmt <- formats]
         --
         -- [tryField "published" fmt | fmt <- formats] <>
         -- [tryField "date"      fmt | fmt <- formats] <>
@@ -153,7 +152,7 @@ relativizeUrls' item = do
 
 -- constants
 siteBlurb :: String
-siteBlurb = "Normative Statements - Functional programming for nonfunctional people"
+siteBlurb = "nliu.net -> "
 
 siteUrl :: FilePath
 siteUrl = "https://nliu.net/"

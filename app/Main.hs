@@ -1,10 +1,11 @@
 --------------------------------------------------------------------------------
-{-# LANGUAGE RankNTypes, BlockArguments, OverloadedStrings #-}
+{-# LANGUAGE RankNTypes, BlockArguments, OverloadedStrings, ViewPatterns, PatternGuards, PatternSynonyms, DataKinds, ImportQualifiedPost #-}
 module Main where
 
 import Data.Monoid (mappend)
 import Hakyll
 import Hakyll.Core.Configuration
+import Hakyll.Core.Identifier.Pattern
 import Text.Pandoc
 import Text.Pandoc.Extensions
 import Data.Text qualified as T
@@ -29,7 +30,7 @@ main = do
   hakyllWith config do
     match (fromList ["CNAME", "site.webmanifest"]) do
         route idRoute
-        compile copyFileCompiler 
+        compile copyFileCompiler
 
     match "images/**" do
         route   idRoute
@@ -41,14 +42,14 @@ main = do
 
     match "css/*.scss" do
         route sassRoute
-        compile 
+        compile
             $ getResourceFilePath -- for better error messages
             >>= runSassFile
-            >>= withItemBody (pure . compressCss) 
+            >>= withItemBody (pure . compressCss)
 
     match (fromGlob "siteroot/*.md") do
         route moveToRoot
-        compile  
+        compile
             $ initialTransforms
             >>= customPandoc
             >>= loadAndApplyTemplate "templates/default.html" baseCtx
@@ -58,7 +59,7 @@ main = do
     match "drafts/*.md" $ buildPost postsCtx'
 
     mapM_ (\t -> uncurryN mkListPage t postsCtx' [baseCtx])
-        [ ("archive.html", "posts/*", "posts", "Archives", "templates/archive.html") 
+        [ ("archive.html", "posts/*", "posts", "Archives", "templates/archive.html")
         , ("drafts.html", "drafts/*", "posts", "Drafts", "templates/drafts.html")
         ]
 
@@ -66,14 +67,14 @@ main = do
         route moveToRoot
         compile do
             posts <- take maxIndexPagePosts <$> (recentFirst =<< loadAll "posts/*")
-            let indexCtx = listField "posts" postsCtx' (pure posts) 
+            let indexCtx = listField "posts" postsCtx' (pure posts)
                            <> funcFields
-                           <> boolField "index" (const True) -- hack so that we default to regular title
-                           <> notPost 
-                           <> baseCtx 
+                           <> boolField "index" (const True) -- hack to default to regular title
+                           <> notPost
+                           <> baseCtx
 
-            getResourceBody 
-                >>= applyAsTemplate indexCtx 
+            getResourceBody
+                >>= applyAsTemplate indexCtx
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls'
 
@@ -98,14 +99,14 @@ customPandoc = renderPandocWithTransform readerConfig writerConfig walkPandocAST
     -- my contribution to Hakyll :DDDD
 
 customExts :: Extensions -- pandoc options
-customExts = pandocExtensions `mappend` extensionsFromList 
+customExts = pandocExtensions <> extensionsFromList
     [ Ext_native_divs
     , Ext_literate_haskell
     , Ext_emoji
     , Ext_inline_code_attributes
     , Ext_inline_notes
     , Ext_example_lists
-    , Ext_tex_math_single_backslash 
+    , Ext_tex_math_single_backslash
     ]
 
 -- for debugging
@@ -115,8 +116,8 @@ traceComp x = unsafeCompiler (liftM2 (>>) print pure x)
 buildPost :: Context String -> Rules ()
 buildPost postsCtx' = do
     route $ setExtension "html"
-    compile 
-        $ getResourceBody 
+    compile
+        $ getResourceBody
         >>= customPandoc
         >>= loadAndApplyTemplate postTemplate postsCtx'
         >>= loadAndApplyTemplate defTemplate postsCtx'

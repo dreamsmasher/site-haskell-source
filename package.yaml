@@ -27,6 +27,7 @@ dependencies:
   - free
   - mtl
   - blaze-html
+  - template-haskell
 
 library:
   source-dirs: 
