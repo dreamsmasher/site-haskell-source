@@ -16,6 +16,7 @@ import Data.Maybe
 import Contexts
 import Hakyll.Web.Template qualified as Web
 import System.Environment qualified as Env 
+import Debug.Trace (traceShow)
 
 addClass :: T.Text -> Attr -> Attr
 addClass klass = over _2 (klass :)
@@ -30,12 +31,12 @@ syms = S.fromList "<>{}()?+-/*=!@#$%^&|._"
 
 -- TODO use parsec for this if more AST conversions get added
 walkPandocAST :: Pandoc -> Pandoc
-walkPandocAST = walk transform
+walkPandocAST = walk transformInline
     where 
           isInlineType = maybe False (isUpper . fst) . T.uncons
           isInlineOp = T.all (`S.member` syms)
           isModule = isJust . T.find (== '.')
-          transform = \case
+          transformInline = \case
             c@(Code a t) 
                 | isInlineType t -> Code (addClass (if isModule t then "inline-mod" else "inline-type") a) t
                 | isInlineOp t -> Code (addClass "inline-op" a) t

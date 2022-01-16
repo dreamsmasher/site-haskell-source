@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: bb435ceb6bb4f34c3f161f55f98ab210929efd06425170a8f1aec63f8a6de186
+-- hash: bbc335663a59f8912d0c679e133360874db1c947c74d48b19525962f3afafe65
 
 name:           nliu-net
 version:        1.0
@@ -25,7 +25,6 @@ library
       Sass
       Utils
       Interview
-      InterviewFree
   other-modules:
       Paths_nliu_net
   hs-source-dirs:

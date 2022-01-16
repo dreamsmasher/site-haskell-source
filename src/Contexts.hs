@@ -38,9 +38,13 @@ buildBaseCtx = do
     where fmtUrl = pure . (siteUrl <>) . toFilePath . itemIdentifier
 
 funcFields :: Context String
-funcFields = mconcat $ map (uncurry functionField)
+funcFields = mconcat $ uncurry functionField <$>
     [ ("logoSvg", const . pure . concatMap (printf "<svg><use href=#%s></svg>") )
+    , ("range", range)
     ]
+    where range args item = pure $ case args of
+            [end] ->  "<div>REEEE</div>"
+            _ -> "nothing to see here   "
 
 capitalize :: String -> String
 capitalize = maybe "" (uncurry (:) . (toUpper *** map toLower)) . uncons

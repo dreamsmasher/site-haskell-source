@@ -86,10 +86,12 @@ config :: Configuration
 config = defaultConfiguration -- removed custom deploy for CircleCI
 
 writerConfig :: WriterOptions
-writerConfig = def { writerExtensions = customExts , writerTableOfContents = True}
+writerConfig = def { writerExtensions = exts', writerTableOfContents = True}
+    where exts' = disableExtension Ext_literate_haskell customExts
 
 readerConfig :: ReaderOptions
 readerConfig = def { readerExtensions = customExts, readerStripComments = True }
+    -- where exts' = customExts <> extensionsFromList [Ext_literate_haskell]
 
 initialTransforms :: Compiler (Item String)
 initialTransforms = getResourceBody >>= applyAsTemplate funcFields

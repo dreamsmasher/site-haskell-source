@@ -1,5 +1,15 @@
 {
     "markdownlint.config": {
         "MD033": false
-    }
+    },
+    "liveServer.settings.root": "/_site",
+    "[literate haskell]": {
+        "editor.wordWrap":"wordWrapColumn",
+        "editor.wordWrapColumn": 120
+    },
+    "[markdown]": {
+        "editor.wordWrap":"wordWrapColumn",
+        "editor.wordWrapColumn": 120
+    },
+    "liveServer.settings.port": 5501
 }
