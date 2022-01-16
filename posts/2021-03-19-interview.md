@@ -128,7 +128,7 @@ instance Semigroup () where
 
 Their concatenation function is polymorphic; specialized to their form, but associative nonetheless. They can join amongst themselves at any time, any number of times, and their final result depends only on the order. This law is a constant among the vast landscape of parallel universes, and they harmonize across the fabric of reality as they slowly tend towards unity. 
 
-Among these objects are special ones, whose existence contributes not to the affairs of their world. They don't have identity; rather, they ARE identity. These nameless objects can be joined together with any other inhabitant of their realm, but to no effect. Their concatenation is a null operation, and they leave the world just as they entered it - empty. They are equal citizens to other inhabitants of their worlds, but doomed to existenses berect of action.
+Among these objects are special ones, whose existence contributes not to the affairs of their world. They don't have identity; rather, they ARE identity. These nameless objects can be joined together with any other inhabitant of their realm, but to no effect. Their concatenation is a null operation, and they leave the world just as they entered it - empty. They are equal citizens to other inhabitants of their worlds, but doomed to existences void of action.
 
 ```haskell
 class Semigroup m => Monoid m where
