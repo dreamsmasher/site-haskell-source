@@ -33,6 +33,7 @@ library:
   source-dirs: 
   - src
   - drafts
+  - posts
 
 default-extensions:
   - LambdaCase

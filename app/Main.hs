@@ -2,7 +2,6 @@
 {-# LANGUAGE RankNTypes, BlockArguments, OverloadedStrings, ViewPatterns, PatternGuards, PatternSynonyms, DataKinds, ImportQualifiedPost #-}
 module Main where
 
-import Data.Monoid (mappend)
 import Hakyll
 import Hakyll.Core.Configuration
 import Hakyll.Core.Identifier.Pattern
@@ -21,6 +20,7 @@ import CSS
 import Contexts
 import Utils
 import Sass
+import Control.Monad.IO.Class (MonadIO(liftIO))
 --------------------------------------------------------------------------------
 
 main :: IO ()

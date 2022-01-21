@@ -23,7 +23,6 @@ import Data.Functor
 import Control.Monad.Except (MonadError (throwError, catchError), runExceptT, ExceptT (ExceptT))
 import GHC.Generics (type (:*:))
 import Text.Read (readMaybe)
-import Database.Beam.Sqlite (runBeamSqlite)
 import Data.Functor.Identity (Identity (Identity))
 import Data.Coerce (coerce)
 import Control.Monad.ST

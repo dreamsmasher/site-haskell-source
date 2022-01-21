@@ -5,6 +5,7 @@ packages:
 
 
 extra-deps:
+
   # hakyll
   # TODO change this to newest release when my changes get merged
   # - git: https://github.com/jaspervdj/hakyll.git

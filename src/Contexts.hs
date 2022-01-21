@@ -52,7 +52,7 @@ capitalize = maybe "" (uncurry (:) . (toUpper *** map toLower)) . uncons
 postsCtx :: Context String
 postsCtx =  lastField
          <> keywordField
-        -- <> dateField "published" "%Y-%m-%d"
+        --  <> dateField' "published" "%Y-%m-%d"
         --  <> defaultContext
 
 fixDates :: String -> String
