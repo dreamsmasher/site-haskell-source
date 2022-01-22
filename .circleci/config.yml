@@ -17,11 +17,7 @@ jobs:
     build:
         machine:
             image: "ubuntu-2004:202010-01"
-        # docker:
-        #     - image: fpco/stack-build
-        #       auth:
-        #           username: $DOCKERHUB_USER
-        #           password: $DOCKERHUB_PASSWORD
+        resource_class: large
         steps:
             - add_ssh_keys:
                   fingerprints:
