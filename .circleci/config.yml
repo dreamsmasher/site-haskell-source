@@ -42,8 +42,8 @@ jobs:
             - run:
                   name: Install bloat first (to prevent OOM error)
                   command: |
-                    stack install pandoc
-                    stack install JuicyPixels
+                    stack build pandoc --ghc-options '-j'
+                    stack build JuicyPixels --ghc-options '-j'
 
             - run:
                   name: Build the site generator executable
@@ -54,7 +54,7 @@ jobs:
                   key: v1-stack-work-{{ checksum "stack.yaml" }}
                   paths:
                       - "~/.stack"
-                      - "~/.stack-work"
+                      - "~/project/.stack-work"
 
             - run:
                   name: Build site

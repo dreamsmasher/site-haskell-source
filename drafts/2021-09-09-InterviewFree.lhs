@@ -1,3 +1,8 @@
+---
+title: bringing the backend interview back to basics
+published: 2021-09-09
+tags: haskell basic interpreters
+---
 \begin{code}
 {-# LANGUAGE RankNTypes
   , TupleSections

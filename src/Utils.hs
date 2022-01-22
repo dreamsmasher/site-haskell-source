@@ -71,4 +71,3 @@ mkListPage ident sourceDir lstField pageName template postCtx ctxs = do
                 >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= relativizeUrls'
 
-

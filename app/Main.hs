@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-{-# LANGUAGE RankNTypes, BlockArguments, OverloadedStrings, ViewPatterns, PatternGuards, PatternSynonyms, DataKinds, ImportQualifiedPost #-}
+{-# LANGUAGE RankNTypes, BlockArguments, OverloadedStrings, ViewPatterns, PatternGuards, PatternSynonyms, DataKinds, ImportQualifiedPost, TupleSections #-}
 module Main where
 
 import Hakyll
@@ -12,15 +12,19 @@ import Data.Functor ((<&>))
 import Data.Char (isUpper, isLower)
 import Data.Tuple.Curry
 import Control.Monad
+import Data.Map qualified as Map
 import Control.Applicative
 import Control.Lens (view, set, over, (^.), (%~), (.~))
 import Hakyll.Core.Logger qualified as L
 import Text.Printf (printf)
+import System.FilePath.Lens
+import Control.Lens.Operators
 import CSS
 import Contexts
 import Utils
 import Sass
 import Control.Monad.IO.Class (MonadIO(liftIO))
+import Text.Pandoc.Shared (camelCaseStrToHyphenated)
 --------------------------------------------------------------------------------
 
 main :: IO ()
@@ -57,6 +61,15 @@ main = do
 
     match "posts/*" $ buildPost postsCtx'
     match "drafts/*.md" $ buildPost postsCtx'
+
+    withMatches "**/*.lhs" \idents -> do
+        -- prepend date and convert camelCase -> kebab-case because haskell module names are really particular
+        metas <- Map.fromList <$> traverse (\a -> (a, ) <$> getMetadata a) idents
+        (`buildPostWithRoute` postsCtx') $ customRoute \ident -> 
+            let Just date = lookupString "published" =<< metas Map.!? ident 
+             in toFilePath ident
+                & over basename ((date <>) . ('-' :) . camelCaseStrToHyphenated)
+                & extension .~ ".html"
 
     mapM_ (\t -> uncurryN mkListPage t postsCtx' [baseCtx])
         [ ("archive.html", "posts/*", "posts", "Archives", "templates/archive.html")
@@ -116,11 +129,16 @@ traceComp :: Show t => t -> Compiler t
 traceComp x = unsafeCompiler (liftM2 (>>) print pure x)
 
 buildPost :: Context String -> Rules ()
-buildPost postsCtx' = do
-    route $ setExtension "html"
+buildPost = buildPostWithRoute (setExtension "html")
+
+buildPostWithRoute :: Routes -> Context String -> Rules ()
+buildPostWithRoute router postsCtx' = route router >> do
     compile
         $ getResourceBody
         >>= customPandoc
         >>= loadAndApplyTemplate postTemplate postsCtx'
         >>= loadAndApplyTemplate defTemplate postsCtx'
         >>= relativizeUrls'
+
+withMatches :: Pattern -> ([Identifier] -> Rules ()) -> Rules ()
+withMatches pat f = match pat $ getMatches pat >>= f

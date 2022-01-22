@@ -1,3 +1,7 @@
+---
+title: continuing the coding interview (random experiments for post)
+published: 2021-06-27
+---
 \begin{code}
 {-# LANGUAGE BlockArguments
   , LambdaCase
