@@ -1,19 +1,45 @@
 <article>
-    <section class="header">
-      <h1>$title$</h1>
-      Written: <span class="date">$published$</span> 
-      <!-- $if(last)$ -->
-      to <span class="date">$last$</span>
-      <!-- $endif$ -->
-        $if(author)$
-        <br>
-        by <a href="../about.html"><span class="name">$author$</span></a>
-        <br>
-        $endif$
-      $if(series)$
+  <section class="header">
+    <h1>$title$</h1>
+    Written: <span class="date">$published$</span>
+    <!-- $if(last)$ -->
+    to <span class="date">$last$</span>
+    <!-- $endif$ -->
+    $if(author)$
+    <br>
+    by <a href="../about.html"><span class="name">$author$</span></a>
+    <br>
+    $endif$
+
+    $if(seriesCurPos)$
+    <br>
+    <span style="color:yellow">
+      Part <span style="color:cyan">$seriesCurPos$</span> of <span style="color:cyan">$seriesLength$</span> in this series.
+       <!-- <a href=$seriesUrl$>$seriesLength$-part series.</a> -->
+    </span>
+
+    <br>
+    <span>
+      $if(seriesPrev)$
+      <a href=$seriesPrev$ alt="Previous post">[prev]</a>
+      $else$
+      [prev]
       $endif$
-    </section>
-    <section>
-        $body$
-    </section>
+
+      <a href=$seriesUrl$ alt="Series index">[index]</a>
+
+      $if(seriesNext)$
+      <a href=$seriesNext$ alt="Next post">[next]</a>
+      $else$
+      [next]
+      $endif$
+    </span>
+    <br>
+
+    $endif$
+
+  </section>
+  <section>
+    $body$
+  </section>
 </article>

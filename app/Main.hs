@@ -25,13 +25,33 @@ import Utils
 import Sass
 import Control.Monad.IO.Class (MonadIO(liftIO))
 import Text.Pandoc.Shared (camelCaseStrToHyphenated)
+import Data.Maybe (catMaybes)
+import Series (buildSeries, seriesField)
 --------------------------------------------------------------------------------
 
 main :: IO ()
 main = do
   baseCtx <- buildBaseCtx
-  let postsCtx' = postsCtx <> baseCtx
   hakyllWith config do
+
+    seriesTags <- buildSeries "posts/*" (fromCapture "series/*.html")
+    let postsCtx' = seriesField seriesTags <> postsCtx <> baseCtx 
+
+    tagsRules seriesTags \tag pat -> do
+        route idRoute
+        compile do
+            posts <- chronological =<< loadAll pat
+            let fmtted = unwords $ map capitalize $ splitAll "_" tag
+                title = printf "index: series (%s)" fmtted
+                ctx = constField "title" title
+                    <> constField "seriesName" fmtted
+                    <> listField "posts" postsCtx' (pure posts)
+                    <> baseCtx
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/series.html" ctx
+                >>= loadAndApplyTemplate "templates/default.html" ctx
+                >>= relativizeUrls
+
     match (fromList ["CNAME", "site.webmanifest"]) do
         route idRoute
         compile copyFileCompiler
@@ -51,7 +71,7 @@ main = do
             >>= runSassFile
             >>= withItemBody (pure . compressCss)
 
-    match (fromGlob "siteroot/*.md") do
+    match "siteroot/*.md" do
         route moveToRoot
         compile
             $ initialTransforms
@@ -59,14 +79,16 @@ main = do
             >>= loadAndApplyTemplate "templates/default.html" baseCtx
             >>= relativizeUrls'
 
-    match "posts/*" $ buildPost postsCtx'
+    match "posts/*.md" do
+        buildPost postsCtx'
+
     match "drafts/*.md" $ buildPost postsCtx'
 
     withMatches "**/*.lhs" \idents -> do
         -- prepend date and convert camelCase -> kebab-case because haskell module names are really particular
-        metas <- Map.fromList <$> traverse (\a -> (a, ) <$> getMetadata a) idents
+        metas <- Map.fromList <$> traverse (\idt -> (idt, ) <$> getMetadata idt) idents
         (`buildPostWithRoute` postsCtx') $ customRoute \ident -> 
-            let Just date = lookupString "published" =<< metas Map.!? ident 
+            let Just date = lookupString "published" =<< metas Map.!? ident
              in toFilePath ident
                 & over basename ((date <>) . ('-' :) . camelCaseStrToHyphenated)
                 & extension .~ ".html"
@@ -132,13 +154,17 @@ buildPost :: Context String -> Rules ()
 buildPost = buildPostWithRoute (setExtension "html")
 
 buildPostWithRoute :: Routes -> Context String -> Rules ()
-buildPostWithRoute router postsCtx' = route router >> do
-    compile
-        $ getResourceBody
-        >>= customPandoc
-        >>= loadAndApplyTemplate postTemplate postsCtx'
-        >>= loadAndApplyTemplate defTemplate postsCtx'
-        >>= relativizeUrls'
+buildPostWithRoute router postsCtx' = do
+    route router
+    compile do
+        -- ident <- getUnderlying
+        -- seriesMeta <- getMetadataField ident "series"
+        
+        getResourceBody
+            >>= customPandoc
+            >>= loadAndApplyTemplate postTemplate postsCtx'
+            >>= loadAndApplyTemplate defTemplate postsCtx'
+            >>= relativizeUrls'
 
 withMatches :: Pattern -> ([Identifier] -> Rules ()) -> Rules ()
 withMatches pat f = match pat $ getMatches pat >>= f
