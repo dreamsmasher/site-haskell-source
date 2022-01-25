@@ -2,18 +2,12 @@
 title: About
 ---
 
-My name is Norman Liu, and I'm a dev from Vancouver. I graduated with a B.Sc.in Biology, but realized later on that my real passion was code. In my spare time, I'm usually exploring open-source projects, playing music, or grinding through LeetCode questions (currently at 650-something).
+My name is Norman Liu, and I'm a full-stack developer based in Vancouver. I graduated with a B.Sc.in Biology, but realized later on that my real passion was software. In my spare time, I'm usually exploring open-source projects, playing guitar, hiking, or arguing with my cat.
 
-I love problem solving, mathematics, and programming. I'm drawn to the creativity and unconventional thinking that programming requires, and the ability to build and design a system by myself. There's a ton of beauty in code, and I like to express that when it might not be immediately obvious. 
+I'm drawn to the creativity and unconventional thinking required by programming, as well as the unconventional approaches you need to take in order to overcome problems. There's a ton of beauty and hidden meaning behind the semantics of computation, and my goal for this blog is to try and express that in prose/eye-watering snippets.
 
-I mainly write my personal projects in Haskell, and I graduated from Hack Reactor as a full-stack developer. I figure there's more work for `TypeScript` developers than at the few dozen companies that use sane languages. This blog is a way for me to try and get over my aversion to CSS, and showcase my skills.
+I write Scala and Rust professionally, and Haskell unprofessionally. I'm experienced in Python, TypeScript, Common Lisp, and of course, HTML and CSS (the only programming languages for true developers.) My personal preference is Haskell, and you'll find it forms most of the content here. Lately however, I've been playing around with OCaml in my spare time, and I might shift focus a little more in that direction down the road.
 
-The format I'm following is that of the [long site](https://www.gwern.net/About#long-site), which basically saves me the stress of having to edit to perfection before publishing. My writing cycle is that I come up with ideas, vomit everything into a neat little .md file, and publish. Then I come back to it the next day. And the next day. And so on, until I feel like there aren't any more improvements I can make for the time being. If I make any typos or egregious errors in my writing, however, please let me know. Everything you need to [Contact](https://nliu.net/contact.html) me is five words back.
+The format I'm following is that of the [long site](https://www.gwern.net/About#long-site), which basically saves me the stress of having to edit to perfection before publishing. My writing cycle is pretty sporadic - sometimes it's easy to vomit everything into a `.md` file, other times it takes a few months for ideas to hit me. I'll usually come back to a post the next day after writing it to make small revisions. And the next day too. And so on, until I feel like there aren't any more improvements I can make for the time being. If I make any typos or egregious errors in my writing, however, please let me know. Everything you need to [Contact](https://nliu.net/contact.html) me is five words back.
 
-All my posts are written using [neovim](https://neovim.io/), and I use [coc-markdownlint](https://github.com/fannheyward/coc-markdownlint) for error-checking. The site is generated using [Hakyll](https://jaspervdj.be/hakyll/), a static site generator written and configured in Haskell. I build and deploy using CircleCI, which is arguably overkill, there's a certain sense of power that comes with provisioning a VM just to generate 100kb of HTML. It's like having an army of machines available to do your web-developer bidding.
-
-It saves me 8 lines of typing each update, though. :)
-
-
-
-
+All my posts are written using [neovim](https://neovim.io/), and I use [coc-markdownlint](https://github.com/fannheyward/coc-markdownlint) for error-checking. The site is generated using [Hakyll](https://jaspervdj.be/hakyll/), a static site generator written and configured in Haskell. I deploy this site via Github pages, with some CI steps in-between to make sure I don't break everything when pushing new content.

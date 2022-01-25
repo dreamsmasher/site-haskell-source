@@ -1,7 +1,6 @@
 ---
 title: Contact
 ---
-I'm currently looking for work!
 
 For inquiries, hatemail, etc, my email is 
 <a href="mailto:norman@nliu.net">norman@nliu.net</a>.<br>
