@@ -2,7 +2,7 @@
 title: "subverting the software interview"
 published: 2021-03-19
 last: 2021-03-26
-author: Norman Liu
+author: Naomi Liu
 series: interview
 ---
 

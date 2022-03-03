@@ -2,7 +2,9 @@
 title: About
 ---
 
-My name is Norman Liu, and I'm a full-stack developer based in Vancouver. I graduated with a B.Sc.in Biology, but realized later on that my real passion was software. In my spare time, I'm usually exploring open-source projects, playing guitar, hiking, or arguing with my cat.
+Hey! Thanks for being interested enough to actually check out this page.
+
+I'm Naomi Liu, and I'm a full-stack developer based in Vancouver. I graduated with a B.Sc Hons in Biology, but realized later on that my real passion was software. In my spare time, I'm usually exploring open-source projects, playing guitar, hiking, or arguing with my cat.
 
 I'm drawn to the creativity and unconventional thinking required by programming, as well as the unconventional approaches you need to take in order to overcome problems. There's a ton of beauty and hidden meaning behind the semantics of computation, and my goal for this blog is to try and express that in prose/eye-watering snippets.
 

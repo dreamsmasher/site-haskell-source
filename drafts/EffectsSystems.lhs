@@ -9,6 +9,7 @@ published: 2022-01-15
 {-# OPTIONS_GHC -Wall #-}
 
 {-# LANGUAGE FlexibleContexts, FlexibleInstances, RankNTypes, UndecidableInstances, TypeFamilies, GADTs, DerivingVia, GeneralisedNewtypeDeriving, BlockArguments, MultiParamTypeClasses , TypeOperators, DeriveFunctor, InstanceSigs, ScopedTypeVariables, DataKinds, PolyKinds, StandaloneDeriving, TypeApplications, UndecidableSuperClasses, LambdaCase, TupleSections #-}
+{-# LANGUAGE PartialTypeSignatures, AllowAmbiguousTypes #-}
 module EffectsSystems where
 import Control.Monad
 import Control.Monad.State hiding (MonadTrans)
@@ -16,12 +17,9 @@ import Data.Kind
 import Control.Monad.Reader hiding (MonadTrans)
 import Data.Foldable (find, traverse_)
 import Data.Function
-import Data.Text (Text)
-import Control.Concurrent (getNumCapabilities)
 import Control.Exception
 import Data.Functor
 import Control.Monad.Except (MonadError (throwError, catchError), runExceptT, ExceptT (ExceptT))
-import GHC.Generics (type (:*:))
 import Text.Read (readMaybe)
 import Data.Functor.Identity (Identity (Identity))
 import Data.Coerce (coerce)
@@ -226,21 +224,17 @@ So what exactly is an "effect"? It doesn't really make sense for a purely functi
 I like to think of effects more as passing around/manipulating contexts - in the monad transformer approach, every "layer" of your stack carries some semantic information:
 
 \begin{code}
--- here's an environment you can use for your monadic computation
+-- I have a monadic action that needs an environment `r`
 newtype ReaderT' r m a = ReaderT' (r -> m a)
 
--- here's a state, gimme back a value and a new state
+-- I have a monadic action that affects some implicit state `s`, so gimme one
 newtype StateT' s m a = StateT' (s -> m (a, s))
 
--- your computation might fail with an error `e`
+-- I have an action that might fail with an error `e`
 newtype ExceptT' e m a = ExceptT' (m (Either e a))
 
--- give me something to do with an `a` and I'll do that with an `a`
+-- I have an `a`, gimme something to do with it
 newtype ContT' r m a = ContT' ((a -> m r) -> m r)
-
--- give me ANYTHING you wanna do with an `a`, I promise I have one
--- good luck trying to callCC though :^)
-newtype CodensityT' m a = CodensityT' (forall r. (a -> m r) -> m r)
 \end{code}
 
 and the *composition* of those layers creates a stack of contexts that interact generically:
@@ -362,7 +356,7 @@ The gist of the paper is that you can define a simple coproduct (aka a disjoint 
 \begin{code}
 -- compare with Either (f a) (g a)
 -- the inhabitants of (f :+: g) a = count(f a) + count(g a)
-data (f :+: g) a = InL (f a) | InR (g a) deriving Functor
+data (f :+: g) a = InL (f a) | InR (g a) deriving (Functor, Eq, Show)
 infixr 7 :+:
 \end{code}
 
@@ -423,11 +417,17 @@ Similar to our monad transformer stacks, the order of our effects is just the or
 For clarity, we know that given a coproduct `f :+: g`, we can always inject an `f` into that coproduct, but can't always get an `f` back out.
 
 \begin{code}
+
 class (Functor sub, Functor sup) => sub :<: sup where
   -- inject
   inj :: sub a -> sup a
   -- project
   prj :: sup a -> Maybe (sub a)
+
+-- (:<:) is basically a `Prism` over coproducts,
+-- you can always lift and sometimes unlift
+-- coprod :: forall sub sup a. (Functor sub, Functor sup, sub :<: sup) => Prism' (sup a) (sub a)
+-- coprod = prism inj \sup -> maybe (Left sup) Right (prj sup)
 
 -- compare with `lift` from `MonadTrans`
 instance (Functor f, Functor g) => f :<: (f :+: g) where
@@ -437,7 +437,7 @@ instance (Functor f, Functor g) => f :<: (f :+: g) where
 
 \end{code}
 
-We can inject a functor into an imaginary coproduct containing only itself, and always get it back out:
+We can inject a functor into an singleton coproduct containing only itself, and always get it back out:
 
 \begin{code}
 -- reflexivity
@@ -462,7 +462,7 @@ instance {-# OVERLAPPABLE #-}
   prj (InR ta) = prj ta
 \end{code}
 
-Within a chain `f :+: g :+: h :+: ...`, there's only ever a single value. We're defining the equivalent of `union`s in other languages, but with some more structure.
+Within a chain `f :+: g :+: h :+: ...`, there's only ever a single value. We're defining the equivalent of `union`s in other languages, but with some more structure in terms of type order.
 
 \begin{code}
 -- called `inject` in the original paper

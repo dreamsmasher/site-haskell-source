@@ -2,7 +2,7 @@
 title: declarative is a buzzword
 published: 2020-10-29
 last: 2020-10-30
-author: Norman Liu
+author: Naomi Liu
 keywords: css haskell rants declarative webdev programming 
 ---
 
