@@ -1,7 +1,7 @@
 name: nliu-net
 version: 1.0
 synopsis: personal blog
-maintainer: Naomi Liu <normanwuweiliu@gmail.com>
+maintainer: Naomi Liu <naomi@nliu.net>
 github: dreamsmasher/site-haskell-source
 dependencies:
   - base >= 4.9 && < 5
@@ -30,7 +30,7 @@ dependencies:
   - template-haskell
 
 library:
-  source-dirs: 
+  source-dirs:
   - src
   - drafts
   - posts

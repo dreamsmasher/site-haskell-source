@@ -2,8 +2,8 @@
 title: Contact
 ---
 
-For inquiries, hatemail, etc, my email is 
-<a href="mailto:norman@nliu.net">norman@nliu.net</a>.<br>
+For inquiries, hatemail, etc, my email is
+<a href="mailto:naomi@nliu.net">naomi@nliu.net</a>.<br>
 
 You can also find me on [Github][github] and [LinkedIn][lnk].
 

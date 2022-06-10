@@ -11,7 +11,7 @@ version:        1.0
 synopsis:       personal blog
 homepage:       https://github.com/dreamsmasher/site-haskell-source#readme
 bug-reports:    https://github.com/dreamsmasher/site-haskell-source/issues
-maintainer:     Naomi Liu <normanwuweiliu@gmail.com>
+maintainer:     Naomi Liu <naomi@nliu.net>
 build-type:     Simple
 
 source-repository head
