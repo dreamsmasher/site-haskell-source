@@ -19,7 +19,7 @@ git clone git@github.com:dreamsmasher/dreamsmasher.github.io.git "$DEPLOY_DIR"
 cd "$DEPLOY_DIR"
 rm -rf *
 cp -rv $SOURCE_DIR/_site/* .
-echo "nliu.net" > CNAME # keep our site live
+echo "nliu.net" > CNAME # VERY IMPORTANT LOL keep the site live
 
 # Commit the changes and push to the deployment repository:
 git add .

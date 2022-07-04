@@ -11,54 +11,33 @@ workflows:
         jobs:
             - build:
                   context:
-                      - dockerhub-login-norman
+                      - dockerhub-login-naomi
 
 jobs:
     build:
-        machine:
-            image: "ubuntu-2004:202010-01"
-        resource_class: large
-        steps:
+      docker:
+            - image: nixos/nix
+      steps:
             - add_ssh_keys:
                   fingerprints:
-                      - "wDuQH8vckKgm5eiqS8gOOKhxzMOYus2VzcM/LbGwAL0"
+                  - "wDuQH8vckKgm5eiqS8gOOKhxzMOYus2VzcM/LbGwAL0"
 
             - run:
-                  name: Install Stack
-                  command: curl -sSL https://get.haskellstack.org/ | sh
-
+                  name: Enable Nix flakes
+                  command: | 
+                        nix-env -iA nixpkgs.nixFlakes
+                        mkdir -p ~/.config/nix
+                        echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
 
             - checkout
 
-            - restore_cache:
-                  name: Restore Cached Dependencies
-                  keys:
-                      - v1-stack-work-{{ checksum "stack.yaml" }}
+            - run:
+                  name: Build site executable
+                  command: nix build -v 
 
             - run:
-                  name: Resolve/Update Dependencies
-                  command: stack --no-terminal setup
-
-            - run:
-                  name: Install bloat first (to prevent OOM error)
-                  command: |
-                    stack build pandoc --ghc-options '-j'
-                    stack build JuicyPixels --ghc-options '-j'
-
-            - run:
-                  name: Build the site generator executable
-                  command: stack build
-
-            - save_cache:
-                  name: Cache Dependencies
-                  key: v1-stack-work-{{ checksum "stack.yaml" }}
-                  paths:
-                      - "~/.stack"
-                      - "~/project/.stack-work"
-
-            - run:
-                  name: Build site
-                  command: stack run build
+                  name: static site generator go brrrrrrr
+                  command: ./result/bin/nliu-exe clean && ./result/bin/nliu-exe build
 
             - store_artifacts:
                   path: _site
@@ -66,6 +45,6 @@ jobs:
             - deploy:
                   name: Deploy to Github Pages (repo hosting main site)
                   command: |
-                    if [ "${CIRCLE_BRANCH}" == "main" ]; then
-                        sh .circleci/deploy.sh
-                    fi
+                        # if [ "${CIRCLE_BRANCH}" == "main" ]; then
+                              sh .circleci/deploy.sh
+                        # fi
