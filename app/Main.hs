@@ -17,6 +17,7 @@ import Control.Applicative
 import Control.Lens (view, set, over, (^.), (%~), (.~))
 import Hakyll.Core.Logger qualified as L
 import Text.Printf (printf)
+import GHC.IO.Encoding qualified as Enc
 import System.FilePath.Lens
 import Control.Lens.Operators
 import Contexts
@@ -26,10 +27,14 @@ import Control.Monad.IO.Class (MonadIO(liftIO))
 import Text.Pandoc.Shared (camelCaseStrToHyphenated)
 import Data.Maybe (catMaybes)
 import Series (buildSeries, seriesField)
+import qualified GHC.IO.Encoding as Enc
 --------------------------------------------------------------------------------
 
 main :: IO ()
 main = do
+  -- to avoid invalid byte sequence error
+  Enc.setLocaleEncoding Enc.utf8
+
   baseCtx <- buildBaseCtx
   hakyllWith config do
 
