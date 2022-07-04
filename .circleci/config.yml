@@ -33,7 +33,7 @@ jobs:
 
             - run:
                   name: Build site executable
-                  command: nix build -v 
+                  command: nix build -v -j $(nproc) 
 
             - run:
                   name: static site generator go brrrrrrr
