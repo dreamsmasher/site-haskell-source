@@ -1,16 +1,16 @@
 cradle:
-  stack:
-    - path: "./src"
-      component: "nliu-net:lib"
+  cabal:
+    - path: "src"
+      component: "lib:nliu-net"
 
-    - path: "./drafts"
-      component: "nliu-net:lib"
+    - path: "drafts"
+      component: "lib:nliu-net"
 
-    - path: "./posts"
-      component: "nliu-net:lib"
+    - path: "posts"
+      component: "lib:nliu-net"
 
-    - path: "./app/Main.hs"
+    - path: "app/Main.hs"
       component: "nliu-net:exe:nliu-exe"
 
-    - path: "./app/Paths_nliu_net.hs"
+    - path: "app/Paths_nliu_net.hs"
       component: "nliu-net:exe:nliu-exe"

@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.34.7.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2b2ff2a69546c7131a6c06097091efd58ef6b3a03133a40a07e096e2795380c1
+-- hash: 7f27a239c692499acd1a345ea08c05e6ef95358164bf46650e827ca7374539b5
 
 name:           nliu-net
 version:        1.0
@@ -12,6 +12,8 @@ synopsis:       personal blog
 homepage:       https://github.com/dreamsmasher/site-haskell-source#readme
 bug-reports:    https://github.com/dreamsmasher/site-haskell-source/issues
 maintainer:     Naomi Liu <naomi@nliu.net>
+license:        AGPL-3
+license-file:   LICENSE
 build-type:     Simple
 
 source-repository head
@@ -21,7 +23,6 @@ source-repository head
 library
   exposed-modules:
       Contexts
-      CSS
       Sass
       Series
       Utils

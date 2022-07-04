@@ -4,9 +4,4 @@
 #   https://docs.haskellstack.org/en/stable/lock_files
 
 packages: []
-snapshots:
-- completed:
-    size: 580406
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2021/9/6.yaml
-    sha256: 101044dfd98d19cbba5e0626ed2e14caec700abb740bbecb5acbf1cd1e8d2ab5
-  original: nightly-2021-09-06
+snapshots: []

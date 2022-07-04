@@ -19,7 +19,6 @@ import Hakyll.Core.Logger qualified as L
 import Text.Printf (printf)
 import System.FilePath.Lens
 import Control.Lens.Operators
-import CSS
 import Contexts
 import Utils
 import Sass
