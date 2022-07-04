@@ -33,7 +33,9 @@ jobs:
 
             - run:
                   name: Build site executable
-                  command: nix build -v -j $(nproc) 
+                  command: nix build -v -L
+                  environment:
+                        NIX_BUILD_CORES: 0
 
             - run:
                   name: static site generator go brrrrrrr
