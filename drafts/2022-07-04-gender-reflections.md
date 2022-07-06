@@ -100,7 +100,7 @@ They upped my hormone dosage around October of 2021. My levels were looking good
 
 I felt the side-effects of spiro HARD. My brain was basically a pile of mush for months. It was hard to code, or get anything productive done at all. That's partially why this site hasn't been updated in a while.
 
-It was around this time that my parents found some of my old hormone bottles in my old room, and the fallout was BAD. I mentioned that my mom didn't have a great reaction when I first came out to them - they basically asked me at the time to keep my identity a secret from the rest of the family. This is why I waited so desperately to move out before starting to present femme full-time. All my fears about making my parents ashamed basically came true. It didn't matter to them how I felt. That I was probably going to end up killing myself in a few years if I had to keep living that charade. They were more worried about how they would come across to everyone. How my queerness made them look bad. How it reflected poorly on them as parents, for raising a boy so poorly that he failed as a male entirely.
+It was around this time that my parents found some of my old hormone bottles in my old room, and the fallout was BAD. I mentioned that my mom didn't have a great reaction when I first came out to them - they basically asked me at the time to keep my identity a secret from the rest of the family. This is why I waited so desperately to move out before starting to present femme full-time. All my fears about making my parents ashamed basically came true. It didn't matter to them how I felt, or that I was probably going to end up killing myself in a few years if I had to keep living that charade. They were more worried about how they would come across to everyone. How my queerness made them look bad. How it reflected poorly on them as parents, for raising a boy so poorly that he failed as a male entirely.
 
 In between me coming out and that moment, we didn't talk about transition once. They probably felt that by ignoring the issue, it would disappear. That my coming-out to them was on a random impulse, just a weird, isolated moment.
 
@@ -136,17 +136,27 @@ I felt useless.
 
 <h3 style="color:yellow">:s/down/up/g</h3>
 
-It was mid-February now. My mood was weird at this point. I knew that if I didn't take charge of things, I would keep slipping. I set a goal for myself, to gradually start coming out to people. It started with 1 or 2 people per week, and everybody took it well. My sister was the first person to find out. I was terrified, because of how my parents reacted. Thank fuck zoomers are a more open-minded.
+It was mid-February now. My mood was weird at this point. I knew that if I didn't take charge of things, I would keep slipping. I set a goal for myself, to gradually start coming out to people. It started with 1 or 2 people per week, and everybody took it well. My sister was the first person to find out. I was terrified, because of how my parents reacted. Thank fuck zoomers are more open-minded.
 
 I picked my name around this point. Honestly, I had liked the name Naomi for years, and I always thought it'd be a nice name for a daughter. Too bad, I stole it. The gradual rollout of Me 2.0 had started to accelerate, and eventually I had told every one of my past friends. People that I didn't interacted with in ages. People whose potential reactions were completely opaque to me. I didn't get a single bad one.
 
 Sure, there were some stupid questions. I got about 20 of the same "when did this start?", and "wow, how did you realize". I was glad to answer them, because at least I wasn't being accosted or berated. They just wanted to know how to act around me moving forward. They respected me, even if they didn't understand. I didn't lose any more community from this, thank fuck.
 
-I decided it was time to take that big step, and come out at work. People were great too. I got a ton of positive reactions and good sentiments, and it felt great in that moment to finally be present as myself. HR gave me a new email within 5 minutes.
+I decided it was time to take that big step, and come out at work. People were great too. I got a ton of positive reactions and good sentiments, and it felt great in that moment to finally be present as myself. The CEO herself chimed in to congratulate me on taking this step. HR gave me a new email within 5 minutes. I was proud, of both who I was and that I finally stopped putting this off.
 
+It wasn't all perfect, though. Before I came out, I changed my display name on Slack and my avatar too. Most people figured out who the person behind this mysterious personal speech was, easy enough. All my usernames on my other work accounts remained the same. We had a company all-hands that week, and I chimed in at some point. The CEO responded to me by deadnaming me in rapid succession. She must have said it at least 10 times in a row.
 
+Don't deadname trans people. Even now, I get really upset seeing it written or mentioned anywhere.
 
-By March, I left my job. Things had gotten to a point where I didn't feel that I could continue on. I had failed myself, my coworkers, and everyone around me. Actually, that third clause is redundant. I was just on my own now.
+I guess she didn't connect the dots between my post and who I was? Everybody in the meeting froze in shock, HR included. It later turned out that she thought I was one of the contractors or interns. Shit. I tried to make my identity as clear as possible, but clearly I didn't do enough. That moment ruined my mood for the next little while. She apologized still.
+
+My productivity was still in the toilet at this point, and not for any real justifiable reason. My emotional state was at a low point, but not in any dramatic or painful sense. I felt numb. Maybe deep down, I saw coming out as a last-hurrah sort of deal. That if I were to do something drastic, I wanted to be addressed by my proper name at least once. I wanted to experience ordinary life as myself. Just to know what it was like. Then I could go happily.
+
+By March, I left my job. Things had gotten to a point where I didn't feel that I could continue on. I had failed myself, my coworkers, and everyone around me. Actually, that third clause is redundant. I was just on my own now. I didn't feel like I was good enough for anything or anyone. I was burnt out from pulling late nights, trying to catch up on technical debt from earlier nighttime sprints. It was a cycle of stress and hurt. I dreaded going into work and facing my coworkers, deeply intelligent people who I respected. Who I let down.
+
+I laid in bed for 2 days straight, only getting up to fulfill minimum survival needs. My cat had food and water. I had food and water. Nothing else mattered, really. This felt safe. Nobody would look down on me if I was hiding under my blankets. I belonged here and here alone.
+
+Being a lazy piece of shit got boring quick, so I willed myself back out of my room after a while.
 
 ---
 <h3 style="color:yellow">addendum: egg.sh</h3>
