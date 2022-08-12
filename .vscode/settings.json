@@ -3,6 +3,7 @@
         "MD033": false
     },
     "liveServer.settings.root": "/_site",
+    "haskell.serverExecutablePath": "haskell-language-server",
     "[literate haskell]": {
         "editor.wordWrap":"wordWrapColumn",
         "editor.wordWrapColumn": 120
