@@ -108,7 +108,7 @@ In a white void, the only inhabitants are abstract objects. They dance like the 
 
 ```haskell
 class Semigroup s where
-(<>) :: s -> s -> s
+    (<>) :: s -> s -> s
 -- Associativity law:
 -- a <> (b <> c) = (a <> b) <> c
 
@@ -153,10 +153,10 @@ From these classes, we can derive new worlds simply by swapping arrows around. R
 ```haskell
 newtype Dual a = Dual {getDual :: a}
 
-instance Semigroup s => Dual s where
+instance Semigroup s => Semigroup (Dual s) where
     (Dual a <> Dual b) = Dual (b <> a)
 
-instance Monoid m => Dual m where
+instance Monoid m => Monoid (Dual m) where
     mempty = Dual (mempty)
 ```
 
@@ -164,10 +164,10 @@ We can also define associative mathematical operations as monoids, allowing us t
 
 ```haskell
 newtype Sum a = Sum {getSum :: a}
-newtype Product a = Add {getProduct :: a}
+newtype Product a = Product {getProduct :: a}
 
 instance Num a => Semigroup (Sum a) where
-    Add a <> Add b = Add (a + b)
+    Sum a <> Sum b = Sum (a + b)
 
 instance Num a => Semigroup (Product a) where
     Product a <> Product b = Product (a * b)
